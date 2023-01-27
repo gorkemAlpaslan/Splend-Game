@@ -1,0 +1,143 @@
+$primary: #1c1c1c
+$secondary: #282828
+$tertiary: #333333
+$highlight: #ffcc00
+
+.game
+  display: flex
+  flex-direction: column
+  align-items: center
+  color: white
+  .header
+    display: flex
+    flex-direction: column
+    align-items: center
+    margin: 30px
+    .gameHeader
+      font-size: 3em
+
+  .gameGrid
+    display: grid
+    grid-template-columns: repeat(16, 1fr)
+    grid-template-rows: repeat(16, 1fr)
+    grid-gap: 4px
+    margin-bottom: 30px
+
+  .gameGridItem
+    width: 30px
+    height: 30px
+    background-color: #fff
+    box-shadow: transparent 0 0 0 3px,rgba(18, 18, 18, .1) 0 6px 20px
+    box-sizing: border-box
+    color: #fff
+    cursor: pointer
+    display: inline-flex
+    flex: 1 1 auto
+    font-family: Inter,sans-serif
+    font-weight: 400
+    justify-content: center
+    line-height: 1
+    margin: 0
+    outline: none
+    text-align: center
+    align-items: center
+    text-decoration: none
+    transition: box-shadow .2s,-webkit-box-shadow .2s
+    white-space: nowrap
+    border: 0
+    user-select: none
+    -webkit-user-select: none
+    touch-action: manipulation
+    &:hover
+      box-shadow: #15ff00 0 0 0 1px, transparent 0 0 0 0
+      scale: 1.2
+  .gameGridItemActive
+    background-color: #4CAF50
+  .gameGridItemNegative
+    background-color: #FF5A60
+  .gameGridItemZero
+    background-color: #8080806b
+
+.button36
+  background-color: $tertiary
+  color: $highlight
+  border-radius: 5px
+  padding: 10px 15px
+  &:hover
+    background-color: $highlight
+    color: $primary
+
+@media (min-width: 768px)
+  .button-36
+    padding: 0 2.6rem
+
+.counterWrapper
+  display: flex
+  gap: 10px
+
+.positiveCounter
+  color: #4CAF50
+  font-weight: bold
+  animation: fadeIn 0.5s ease-in-out
+  text-align: center
+  font-size: 1.2em
+  margin: 10px 0
+  padding: 10px
+  border: 2px solid #4CAF50
+  border-radius: 10px
+
+.negativeCounter
+  color: #FF5A60
+  font-weight: bold
+  animation: fadeIn 0.5s ease-in-out
+  text-align: center
+  font-size: 1.2em
+  margin: 10px 0
+  padding: 10px
+  border: 2px solid #FF5A60
+  border-radius: 10px
+
+.negativeBar
+  width: 50%
+  height: 20px !important
+  rotate: 180deg
+  left: 0%
+  top: 0px
+  position: absolute
+
+.positiveBar
+  width: 50%
+  height: 20px !important
+  left: 50%
+  top: 0px
+  position: absolute
+
+.goalsPositive
+  background: inherit
+  height: 20px
+  width: 50%
+  top: 0px
+  position: absolute
+  left: 50%
+.goalsNegative
+  rotate: 180deg
+  background: inherit
+  height: 20px
+  width: 50%
+  top: 0px
+  position: absolute
+  left: 0%
+
+.goal
+  height: 100%
+  position: absolute
+  top: 0px
+
+.goalEasy
+  border-right: 3px solid #dfd
+
+.goalMedium
+  border-right: 3px solid #dfd
+
+.goalHard
+  border-right: 3px solid #dfd
