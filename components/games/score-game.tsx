@@ -39,8 +39,14 @@ const ScoreGame: React.FC<{}> = () => {
   const [goalHard, setGoalHard] = useState(() => calculateSum(30));
   const [level, setLevel] = useState(1);
 
-  const [positive, setPositive] = useState<{}>({ count: 0, value: 0 });
-  const [negative, setNegative] = useState<{}>({ count: 0, value: 0 });
+  const [positive, setPositive] = useState<{ count: number; value: number }>({
+    count: 0,
+    value: 0,
+  });
+  const [negative, setNegative] = useState<{ count: number; value: number }>({
+    count: 0,
+    value: 0,
+  });
 
   const handleClick = (index: any) => {
     const newGrid = [...grid];
@@ -81,8 +87,8 @@ const ScoreGame: React.FC<{}> = () => {
           return { value: 0, effect: Math.floor(Math.random() * 9) - 4 };
         })
     );
-    setPositive(0);
-    setNegative(0);
+    setPositive({ count: 0, value: 0 });
+    setNegative({ count: 0, value: 0 });
     setGoalEasy(calculateSum(10));
     setGoalMedium(calculateSum(20));
     setGoalHard(calculateSum(30));
@@ -97,6 +103,7 @@ const ScoreGame: React.FC<{}> = () => {
       resetHandler();
     }
   }, [score]);
+
   return (
     <div className={styles.game}>
       <Box sx={{ width: "100%" }}>
