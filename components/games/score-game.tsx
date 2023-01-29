@@ -3,7 +3,26 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import styles from "./score-game-style.module.sass";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+declare module "@mui/material/styles" {
+  // allow configuration using `createTheme`
+  interface PaletteOptions {
+    positive?: PaletteOptions["primary"];
+    negative?: PaletteOptions["secondary"];
+  }
+}
+
+const theme = createTheme({
+  palette: {
+    positive: {
+      main: "#228B22",
+    },
+    negative: {
+      main: "#8B0000",
+    },
+  },
+});
 const ScoreGame: React.FC<{}> = () => {
   const [grid, setGrid] = useState(
     Array(256)
@@ -14,6 +33,7 @@ const ScoreGame: React.FC<{}> = () => {
   );
   const [score, setScore] = useState<number>(0);
   const [cancelLeft, setCancelLeft] = useState(10);
+  const [animated, setAnimated] = useState(false);
   const calculateSum = (hardness: any) => {
     let posSum = 0;
     let negSum = 0;
@@ -56,6 +76,8 @@ const ScoreGame: React.FC<{}> = () => {
     newGrid[index].value = newGrid[index].value === 0 ? 1 : 0;
     if (newGrid[index].value === 0) {
       setCancelLeft(cancelLeft - 1);
+      setAnimated(true);
+      setTimeout(() => setAnimated(false), 500);
     }
     setGrid(newGrid);
 
@@ -105,102 +127,129 @@ const ScoreGame: React.FC<{}> = () => {
   }, [score]);
 
   return (
-    <div className={styles.game}>
-      <Box sx={{ width: "100%" }}>
-        <LinearProgress
-          variant="determinate"
-          value={score < 0 ? -score : 0}
-          className={styles.negativeBar}
-          color="secondary"
-        />
-        <LinearProgress
-          variant="determinate"
-          value={score > 0 ? score : 0}
-          className={styles.positiveBar}
-          color="success"
-        />
-      </Box>
-      <div className={styles.goalsPositive}>
-        {goalEasy > 0 && (
-          <div
-            className={`${styles.goalEasy} ${styles.goal}`}
-            style={{ width: `${goalEasy}%` }}
-          ></div>
-        )}
-        {goalMedium > 0 && (
-          <div
-            className={`${styles.goalEasy} ${styles.goal}`}
-            style={{ width: `${goalMedium}%` }}
-          ></div>
-        )}
-        {goalHard > 0 && (
-          <div
-            className={`${styles.goalEasy} ${styles.goal}`}
-            style={{ width: `${goalHard}%` }}
-          ></div>
-        )}
-      </div>
-      <div className={styles.goalsNegative}>
-        {goalEasy < 0 && (
-          <div
-            className={`${styles.goalEasy} ${styles.goal}`}
-            style={{ width: `${-goalEasy}%` }}
-          ></div>
-        )}
-        {goalMedium < 0 && (
-          <div
-            className={`${styles.goalEasy} ${styles.goal}`}
-            style={{ width: `${-goalMedium}%` }}
-          ></div>
-        )}
-        {goalHard < 0 && (
-          <div
-            className={`${styles.goalEasy} ${styles.goal}`}
-            style={{ width: `${-goalHard}%` }}
-          ></div>
-        )}
-      </div>
-      <div className={styles.header}>
-        <h1 className={styles.gameHeader}>Score: {score}</h1>
-        <h3> Cancel : {cancelLeft}/10</h3>
-        <div className={styles.counterWrapper}>
-          <p className={styles.positiveCounter}>
-            Positive Count: {positive.count}
-          </p>
-          <p className={styles.positiveCounter}>
-            Positive Value: {positive.value}
-          </p>
-          <p className={styles.negativeCounter}>
-            Negative Count: {negative.count}
-          </p>
-          <p className={styles.negativeCounter}>
-            Negative Value: {negative.value}
-          </p>
+    <div className={styles.gameWrapper}>
+      <div className={styles.gameContainer}>
+        <div className={styles.gameTitle}>Negative & Pozitive</div>
+        <div className={styles.scoreLine}>
+          <ThemeProvider theme={theme}>
+            <Box sx={{ width: "100%" }}>
+              <LinearProgress
+                variant="determinate"
+                value={score < 0 ? -score : 0}
+                className={styles.negativeBar}
+                color="negative"
+              />
+              <LinearProgress
+                variant="determinate"
+                value={score > 0 ? score : 0}
+                className={styles.positiveBar}
+                color="positive"
+              />
+            </Box>
+          </ThemeProvider>
+
+          <div className={styles.goalsPositive}>
+            {goalEasy > 0 && (
+              <div
+                className={`${styles.goalEasy} ${styles.goal}`}
+                style={{ width: `${goalEasy}%` }}
+              >
+                {Math.round(goalEasy)}
+              </div>
+            )}
+            {goalMedium > 0 && (
+              <div
+                className={`${styles.goalMedium} ${styles.goal}`}
+                style={{ width: `${goalMedium}%` }}
+              >
+                {Math.round(goalMedium)}
+              </div>
+            )}
+            {goalHard > 0 && (
+              <div
+                className={`${styles.goalHard} ${styles.goal}`}
+                style={{ width: `${goalHard}%` }}
+              >
+                {Math.round(goalHard)}
+              </div>
+            )}
+          </div>
+          <div className={styles.goalsNegative}>
+            {goalEasy < 0 && (
+              <div
+                className={`${styles.goalEasy} ${styles.goal} ${styles.negativeGoal}`}
+                style={{ width: `${-goalEasy}%` }}
+              >
+                {Math.round(goalEasy)}
+              </div>
+            )}
+            {goalMedium < 0 && (
+              <div
+                className={`${styles.goalMedium} ${styles.goal} ${styles.negativeGoal}`}
+                style={{ width: `${-goalMedium}%` }}
+              >
+                {Math.round(goalMedium)}
+              </div>
+            )}
+            {goalHard < 0 && (
+              <div
+                className={`${styles.goalHard} ${styles.goal} ${styles.negativeGoal}`}
+                style={{ width: `${-goalHard}%` }}
+              >
+                {Math.round(goalHard)}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className={styles.playArea}>
+          <div className={styles.gameGrid}>
+            {grid.map((value, index) => (
+              <button
+                key={index}
+                className={`${styles.gameGridButtons} ${
+                  value.value === 1 && styles.gameGridItemActive
+                } ${
+                  value.effect < 0 &&
+                  value.value === 1 &&
+                  styles.gameGridItemNegative
+                } ${
+                  value.effect === 0 &&
+                  value.value === 1 &&
+                  styles.gameGridItemZero
+                }`}
+                onClick={() => handleClick(index)}
+                disabled={value.value === 1 && cancelLeft < 1}
+              >
+                {value.value === 1 ? value.effect : ""}
+              </button>
+            ))}
+          </div>
+          <div className={styles.gameStats}>
+            <h3
+              className={`${styles.cancelLeft} ${
+                animated ? styles.animated : ""
+              }`}
+            >
+              Cancel : {cancelLeft}/10
+            </h3>
+            <p className={styles.positiveCounter}>
+              Positive Value: {positive.value}
+            </p>
+            <p className={styles.positiveCounter}>
+              Positive Count: {positive.count}
+            </p>
+            <p className={styles.negativeCounter}>
+              Negative Value: {negative.value}
+            </p>
+            <p className={styles.negativeCounter}>
+              Negative Count: {negative.count}
+            </p>
+            <button onClick={resetHandler} className={styles.resetButton}>
+              Reset Game
+            </button>
+          </div>
         </div>
       </div>
-      <div className={styles.gameGrid}>
-        {grid.map((value, index) => (
-          <button
-            key={index}
-            className={`${styles.gameGridItem} ${
-              value.value === 1 && styles.gameGridItemActive
-            } ${
-              value.effect < 0 &&
-              value.value === 1 &&
-              styles.gameGridItemNegative
-            } ${
-              value.effect === 0 && value.value === 1 && styles.gameGridItemZero
-            }`}
-            onClick={() => handleClick(index)}
-            disabled={value.value === 1 && cancelLeft < 1}
-          >
-            {value.value === 1 ? value.effect : ""}
-          </button>
-        ))}
-      </div>
-      <button onClick={resetHandler} className={styles.button36}>
-        Reset Game
-      </button>
     </div>
   );
 };

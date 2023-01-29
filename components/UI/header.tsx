@@ -13,8 +13,10 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
-const pages = ["Products", "Pricing", "Blog"];
+import logo from "../../public/test.png";
+import Image from "next/image";
+import headerStyle from "./header.module.sass";
+const pages = ["home"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header() {
@@ -54,7 +56,6 @@ function Header() {
       <AppBar position="static" color="primary">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
             <Typography
               variant="h6"
               noWrap
@@ -69,9 +70,8 @@ function Header() {
                 color: "inherit",
                 textDecoration: "none",
               }}
-            >
-              LOGO
-            </Typography>
+            ></Typography>
+
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
