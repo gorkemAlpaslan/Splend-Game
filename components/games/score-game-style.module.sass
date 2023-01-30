@@ -16,7 +16,8 @@ $font-family: 'Open Sans', sans-serif
   @include breakpoint(md)
     padding: 20px
   @include breakpoint(md-sm)
-    padding: 10px
+    padding: 0px
+    box-shadow: none
 
 .gameTitle
   background: #121212
@@ -111,8 +112,7 @@ $font-family: 'Open Sans', sans-serif
     @include breakpoint(md-sm)
       margin: 0px
       margin-top: 50px
-      grid-gap: 3.5px
-      padding: 3px
+
     @include breakpoint(sm)
       padding: 1px
       grid-gap: 2px
@@ -169,7 +169,6 @@ $font-family: 'Open Sans', sans-serif
       font-weight: bold
       text-align: center
       color: $primary-color
-      text-shadow: 2px 2px 2px $secondary-color
       border: 2px solid $primary-color
       border-radius: 10px
       padding: 10px
@@ -177,7 +176,6 @@ $font-family: 'Open Sans', sans-serif
       @include breakpoint(lg)
         max-width: 90px
         font-size: 13px
-        text-shadow: 1px 1px 1px $secondary-color
         border: 1px solid $primary-color
         border-radius: 5px
         padding: 5px
@@ -190,7 +188,6 @@ $font-family: 'Open Sans', sans-serif
       font-weight: bold
       text-align: center
       color: #228B22
-      text-shadow: 2px 2px 2px $secondary-color
       border: 2px solid #228B22
       border-radius: 10px
       padding: 10px
@@ -198,7 +195,6 @@ $font-family: 'Open Sans', sans-serif
       @include breakpoint(lg)
         max-width: 90px
         font-size: 13px
-        text-shadow: 1px 1px 1px $secondary-color
         border: 1px solid #228B22
         border-radius: 5px
         padding: 5px
@@ -211,7 +207,6 @@ $font-family: 'Open Sans', sans-serif
       font-weight: bold
       text-align: center
       color: #8B0000
-      text-shadow: 2px 2px 2px $secondary-color
       border: 2px solid #8B0000
       border-radius: 10px
       padding: 10px
@@ -219,7 +214,6 @@ $font-family: 'Open Sans', sans-serif
       @include breakpoint(lg)
         max-width: 90px
         font-size: 13px
-        text-shadow: 1px 1px 1px $secondary-color
         border: 1px solid #8B0000
         border-radius: 5px
         padding: 5px

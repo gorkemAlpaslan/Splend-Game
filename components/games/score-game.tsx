@@ -129,7 +129,7 @@ const ScoreGame: React.FC<{}> = () => {
   return (
     <div className={styles.gameWrapper}>
       <div className={styles.gameContainer}>
-        <div className={styles.gameTitle}>Negative & Pozitive</div>
+        <div className={styles.gameTitle}>Negative & Positive</div>
         <div className={styles.scoreLine}>
           <ThemeProvider theme={theme}>
             <Box sx={{ width: "100%" }}>
