@@ -6,7 +6,6 @@ import styles from "./score-game-style.module.sass";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
-  // allow configuration using `createTheme`
   interface PaletteOptions {
     positive?: PaletteOptions["primary"];
     negative?: PaletteOptions["secondary"];
@@ -137,13 +136,13 @@ const ScoreGame: React.FC<{}> = () => {
                 variant="determinate"
                 value={score < 0 ? -score : 0}
                 className={styles.negativeBar}
-                color="negative"
+                color="secondary"
               />
               <LinearProgress
                 variant="determinate"
                 value={score > 0 ? score : 0}
                 className={styles.positiveBar}
-                color="positive"
+                color="success"
               />
             </Box>
           </ThemeProvider>
