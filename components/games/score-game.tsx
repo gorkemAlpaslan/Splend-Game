@@ -154,7 +154,9 @@ const ScoreGame: React.FC<{}> = () => {
                 className={`${styles.goalEasy} ${styles.goal}`}
                 style={{ width: `${goalEasy}%` }}
               >
-                {Math.round(goalEasy)}
+                <div className={styles.positiveInner}>
+                  {Math.round(goalEasy)}
+                </div>
               </div>
             )}
             {goalMedium > 0 && (
@@ -162,7 +164,9 @@ const ScoreGame: React.FC<{}> = () => {
                 className={`${styles.goalMedium} ${styles.goal}`}
                 style={{ width: `${goalMedium}%` }}
               >
-                {Math.round(goalMedium)}
+                <div className={styles.positiveInner}>
+                  {Math.round(goalMedium)}
+                </div>
               </div>
             )}
             {goalHard > 0 && (
@@ -170,7 +174,9 @@ const ScoreGame: React.FC<{}> = () => {
                 className={`${styles.goalHard} ${styles.goal}`}
                 style={{ width: `${goalHard}%` }}
               >
-                {Math.round(goalHard)}
+                <div className={styles.positiveInner}>
+                  {Math.round(goalHard)}
+                </div>
               </div>
             )}
           </div>
@@ -180,7 +186,9 @@ const ScoreGame: React.FC<{}> = () => {
                 className={`${styles.goalEasy} ${styles.goal} ${styles.negativeGoal}`}
                 style={{ width: `${-goalEasy}%` }}
               >
-                {Math.round(goalEasy)}
+                <div className={styles.negativeInner}>
+                  {Math.round(-goalEasy)}
+                </div>
               </div>
             )}
             {goalMedium < 0 && (
@@ -188,7 +196,9 @@ const ScoreGame: React.FC<{}> = () => {
                 className={`${styles.goalMedium} ${styles.goal} ${styles.negativeGoal}`}
                 style={{ width: `${-goalMedium}%` }}
               >
-                {Math.round(goalMedium)}
+                <div className={styles.negativeInner}>
+                  {Math.round(-goalMedium)}
+                </div>
               </div>
             )}
             {goalHard < 0 && (
@@ -196,7 +206,9 @@ const ScoreGame: React.FC<{}> = () => {
                 className={`${styles.goalHard} ${styles.goal} ${styles.negativeGoal}`}
                 style={{ width: `${-goalHard}%` }}
               >
-                {Math.round(goalHard)}
+                <div className={styles.negativeInner}>
+                  {Math.round(-goalHard)}
+                </div>
               </div>
             )}
           </div>
