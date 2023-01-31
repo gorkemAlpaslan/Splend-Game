@@ -95,7 +95,6 @@ const ScoreGame: React.FC<{}> = () => {
     setScore(newScore);
     setPositive(pos);
     setNegative(neg);
-    console.log(pos);
   };
 
   const resetHandler = () => {
@@ -113,7 +112,6 @@ const ScoreGame: React.FC<{}> = () => {
     setGoalEasy(calculateSum(10));
     setGoalMedium(calculateSum(20));
     setGoalHard(calculateSum(30));
-    console.log(goalEasy, goalMedium, goalHard);
   };
 
   useEffect(() => {

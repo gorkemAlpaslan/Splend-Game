@@ -11,6 +11,7 @@ $font-family: 'Open Sans', sans-serif
 .gameContainer
   box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px
   padding: 100px
+  background-image: linear-gradient(to right, #242428 , #1C1C1E)
   @include breakpoint(lg)
     padding: 50px
   @include breakpoint(md)
@@ -28,6 +29,7 @@ $font-family: 'Open Sans', sans-serif
   display: flex
   align-items: center
   justify-content: center
+
   @include breakpoint(lg)
     font-size: 16px
     height: 30px
@@ -95,6 +97,7 @@ $font-family: 'Open Sans', sans-serif
   display: flex
   flex-direction: row
   align-items: center
+
   @include breakpoint(md-sm)
     flex-direction: column
     justify-content: center
@@ -112,6 +115,8 @@ $font-family: 'Open Sans', sans-serif
     @include breakpoint(md-sm)
       margin: 0px
       margin-top: 50px
+
+      grid-gap: 4px
 
     @include breakpoint(sm)
       padding: 1px
@@ -147,6 +152,7 @@ $font-family: 'Open Sans', sans-serif
         width: 15px
         height: 15px
         font-size: 8px
+      @include breakpoint(md-sm)
 
       &:hover
         scale: 1.2
@@ -206,11 +212,13 @@ $font-family: 'Open Sans', sans-serif
       font-size: 22px
       font-weight: bold
       text-align: center
-      color: #8B0000
+      color: #1C1C1E
       border: 2px solid #8B0000
       border-radius: 10px
       padding: 10px
       box-shadow: 2px 2px 5px $secondary-color
+      background-image: linear-gradient(to right, #ff5252 , #c41c1c)
+
       @include breakpoint(lg)
         max-width: 90px
         font-size: 13px
@@ -220,11 +228,12 @@ $font-family: 'Open Sans', sans-serif
         box-shadow: 1px 1px 2.5px $secondary-color
 
     .resetButton
-      background-color: #222
+      background-image: linear-gradient(to right, #6441A5 , #FFFFFF)
+
       border-radius: 4px
       border-style: none
       box-sizing: border-box
-      color: #fff
+      color: #000
       cursor: pointer
       display: inline-block
       font-family: "Farfetch Basis","Helvetica Neue",Arial,sans-serif
