@@ -113,19 +113,81 @@ const ScoreGame: React.FC<{}> = () => {
     setGoalMedium(calculateSum(20));
     setGoalHard(calculateSum(30));
   };
-
+  const [totalWin, SetTotalWin] = useState(0);
+  const [totalLose, SetTotalLose] = useState(0);
   useEffect(() => {
-    if (goalEasy <= score && goalEasy > 0) {
+    if (goalEasy <= score && goalEasy > 0 && cancelLeft === 0) {
+      SetTotalWin(totalWin + 1);
       resetHandler();
     }
-    if (goalEasy >= score && goalEasy < 0) {
+    if (goalEasy >= score && goalEasy < 0 && cancelLeft === 0) {
+      SetTotalWin(totalWin + 1);
+      resetHandler();
+    }
+    if (goalMedium <= score && goalMedium > 0 && cancelLeft === 0) {
+      SetTotalWin(totalWin + 2);
+      resetHandler();
+    }
+    if (goalMedium >= score && goalMedium < 0 && cancelLeft === 0) {
+      SetTotalWin(totalWin + 2);
+      resetHandler();
+    }
+    if (goalHard <= score && goalHard > 0 && cancelLeft === 0) {
+      SetTotalWin(totalWin + 3);
+      resetHandler();
+    }
+    if (goalHard >= score && goalHard < 0 && cancelLeft === 0) {
+      SetTotalWin(totalWin + 3);
+      resetHandler();
+    }
+    if (goalEasy > score && goalEasy > 0 && cancelLeft === 0) {
+      SetTotalLose(totalLose + 1);
+      resetHandler();
+    }
+    if (goalEasy < score && goalEasy < 0 && cancelLeft === 0) {
+      SetTotalLose(totalLose + 1);
       resetHandler();
     }
   }, [score]);
 
+  const retreatHandler = () => {
+    if (goalEasy <= score && goalEasy > 0) {
+      SetTotalWin(totalWin + 1);
+      resetHandler();
+    }
+    if (goalEasy >= score && goalEasy < 0) {
+      SetTotalWin(totalWin + 1);
+      resetHandler();
+    }
+    if (goalMedium <= score && goalMedium > 0) {
+      SetTotalWin(totalWin + 2);
+      resetHandler();
+    }
+    if (goalMedium >= score && goalMedium < 0) {
+      SetTotalWin(totalWin + 2);
+      resetHandler();
+    }
+    if (goalHard <= score && goalHard > 0) {
+      SetTotalWin(totalWin + 3);
+      resetHandler();
+    }
+    if (goalHard >= score && goalHard < 0) {
+      SetTotalWin(totalWin + 3);
+      resetHandler();
+    }
+  };
+
   return (
     <div className={styles.gameWrapper}>
       <div className={styles.gameContainer}>
+        <div className={styles.totalScores}>
+          <div className={`${styles.totalWin} ${styles.totalScore}`}>
+            Total Wins : {totalWin}
+          </div>
+          <div className={`${styles.totalLose} ${styles.totalScore}`}>
+            Total Losses : {totalLose}
+          </div>
+        </div>
         <div className={styles.gameTitle}>Negative & Positive</div>
         <div className={styles.scoreLine}>
           <ThemeProvider theme={theme}>
@@ -239,8 +301,11 @@ const ScoreGame: React.FC<{}> = () => {
                 animated ? styles.animated : ""
               }`}
             >
-              Cancel : {cancelLeft}/10
+              Close : {cancelLeft}/10
             </h3>
+            <button className={styles.Button} onClick={retreatHandler}>
+              Retreat Now !
+            </button>
             <p className={styles.positiveCounter}>
               Positive Value: {positive.value}
             </p>
@@ -253,7 +318,7 @@ const ScoreGame: React.FC<{}> = () => {
             <p className={styles.negativeCounter}>
               Negative Count: {negative.count}
             </p>
-            <button onClick={resetHandler} className={styles.resetButton}>
+            <button onClick={resetHandler} className={styles.Button}>
               Reset Game
             </button>
           </div>
