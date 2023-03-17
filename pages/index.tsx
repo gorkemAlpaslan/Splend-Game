@@ -8,7 +8,10 @@ export default function Home() {
         <title>Splend Games</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <div className={style.gameWrapper}>
+        <div className={style.gameTitle}>Negative & Positive</div>
+
         <ScoreGame></ScoreGame>
       </div>
     </div>

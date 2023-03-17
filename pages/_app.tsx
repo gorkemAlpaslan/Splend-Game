@@ -1,7 +1,5 @@
 import "@/styles/globals.sass";
 import type { AppProps } from "next/app";
-import Header from "../components/UI/header";
-import Footer from "../components/UI/footer";
 import { useEffect, useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -19,9 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
   } else {
     return (
       <>
-        <Header />
         <Component {...pageProps} />
-        <Footer />
       </>
     );
   }
