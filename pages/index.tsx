@@ -11,7 +11,6 @@ export default function Home() {
 
       <div className={style.gameWrapper}>
         <div className={style.gameTitle}>Negative & Positive</div>
-
         <ScoreGame></ScoreGame>
       </div>
     </div>

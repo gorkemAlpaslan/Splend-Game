@@ -15,6 +15,8 @@ $font-family: 'Open Sans', sans-serif
   background-image: linear-gradient(to right, #1C1C1E, #242428)
   height: 100vh
   width: 100%
+  @include breakpoint(lg)
+    height: auto
 
 .scoreLine
   position: relative
@@ -95,13 +97,14 @@ $font-family: 'Open Sans', sans-serif
   align-items: center
   justify-content: center
   width: 100%
+  height: 100%
   padding: 30px 0px
   gap: 60px
   @include breakpoint(lg)
     flex-direction: column
     justify-content: center
   @include breakpoint(md-sm)
-    gap: 0px
+    gap: 23px
   .gameGrid
     display: flex
     flex-wrap: wrap
