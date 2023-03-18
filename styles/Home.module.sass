@@ -1,17 +1,61 @@
 @import "./_breakpoints"
+$primary-color: #2196f3
 
 .gameWrapper
   height: 100vh
   overflow: hidden
+  background: #121212
+
   @include breakpoint(lg)
     overflow: scroll
 
 .gameTitle
-  background: #121212
-  height: 30px
-  padding: 10px
-  font-size: 22px
+  display: flex
+  align-items: center
+  flex-direction: row
+  justify-content: space-between
   color: #fff
+  height: 40px
+  font-size: 24px
+  padding: 10px 50px
+  border-bottom: 1px solid white
+  @include breakpoint(md)
+    font-size: 18px
+    padding: 0 50px
+  @include breakpoint(sm)
+    font-size: 7px
+    padding: 0 30px
+
+  .infoButton
+    font-size: 16px
+    position: relative
+    cursor: pointer
+    @include breakpoint(md)
+      font-size: 11px
+    @include breakpoint(sm)
+      font-size: 7px
+    &:hover
+      color: $primary-color
+    .questionMark
+      position: absolute
+      top: -50%
+.info
   display: flex
   align-items: center
   justify-content: center
+  position: absolute
+  width: 100%
+  height: 100%
+  background: #33333396
+  z-index: 90
+  top: 0
+  left: 0
+  .infoContent
+    width: 50%
+    height: 50%
+    background: #000000c4
+    z-index: 100
+    display: flex
+    flex-direction: column
+    padding: 20px
+    gap: 10px
