@@ -60,8 +60,8 @@ export default function Home() {
                 </div>
                 <div>6- you can also retreat once you reach first target</div>
                 <div>
-                  7- if you couldn't reach even first target, you will have a +1
-                  point to your losses counter
+                  7- if you couldn&apos;t reach even first target, you will have
+                  a +1 point to your losses counter
                 </div>
               </div>
             </div>

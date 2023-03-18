@@ -322,7 +322,6 @@ const ScoreGame: React.FC<{}> = () => {
             )}
           </div>
         </div>
-
         <div className={styles.totalScores}>
           <div className={`${styles.totalWin} ${styles.totalScore}`}>
             Total Wins : {totalWin}
