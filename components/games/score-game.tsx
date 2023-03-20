@@ -89,39 +89,56 @@ const ScoreGame: React.FC<{}> = () => {
     setNegative(neg);
   };
 
+  const gameReset = () => {
+    setScore(0);
+    setCancelLeft(10);
+    setGrid(
+      Array(256)
+        .fill(0)
+        .map((val, index) => {
+          return { value: 0, effect: Math.floor(Math.random() * 9) - 4 };
+        })
+    );
+    setPositive({ count: 0, value: 0 });
+    setNegative({ count: 0, value: 0 });
+    setGoalEasy(calculateSum(10));
+    setGoalMedium(calculateSum(20));
+    setGoalHard(calculateSum(30));
+    SetCurrentRetreat(0);
+  };
+
   const resetHandler = (type: string) => {
     if (type === "auto") {
-      setScore(0);
-      setCancelLeft(10);
-      setGrid(
-        Array(256)
-          .fill(0)
-          .map((val, index) => {
-            return { value: 0, effect: Math.floor(Math.random() * 9) - 4 };
-          })
-      );
-      setPositive({ count: 0, value: 0 });
-      setNegative({ count: 0, value: 0 });
-      setGoalEasy(calculateSum(10));
-      setGoalMedium(calculateSum(20));
-      setGoalHard(calculateSum(30));
-      SetCurrentRetreat(0);
+      gameReset();
     } else if (type === "manuel" && cancelLeft > 5) {
-      setScore(0);
-      setCancelLeft(10);
-      setGrid(
-        Array(256)
-          .fill(0)
-          .map((val, index) => {
-            return { value: 0, effect: Math.floor(Math.random() * 9) - 4 };
-          })
-      );
-      setPositive({ count: 0, value: 0 });
-      setNegative({ count: 0, value: 0 });
-      setGoalEasy(calculateSum(10));
-      setGoalMedium(calculateSum(20));
-      setGoalHard(calculateSum(30));
-      SetCurrentRetreat(0);
+      gameReset();
+    }
+  };
+
+  const retreatHandler = () => {
+    if (goalEasy <= score && goalEasy > 0) {
+      SetTotalWin(totalWin + 1);
+      resetHandler("auto");
+    }
+    if (goalEasy >= score && goalEasy < 0) {
+      SetTotalWin(totalWin + 1);
+      resetHandler("auto");
+    }
+    if (goalMedium <= score && goalMedium > 0) {
+      SetTotalWin(totalWin + 2);
+      resetHandler("auto");
+    }
+    if (goalMedium >= score && goalMedium < 0) {
+      SetTotalWin(totalWin + 2);
+      resetHandler("auto");
+    }
+    if (goalHard <= score && goalHard > 0) {
+      SetTotalWin(totalWin + 3);
+      resetHandler("auto");
+    }
+    if (goalHard >= score && goalHard < 0) {
+      SetTotalWin(totalWin + 3);
+      resetHandler("auto");
     }
   };
 
@@ -177,33 +194,6 @@ const ScoreGame: React.FC<{}> = () => {
       resetHandler("auto");
     }
   }, [score, cancelLeft]);
-
-  const retreatHandler = () => {
-    if (goalEasy <= score && goalEasy > 0) {
-      SetTotalWin(totalWin + 1);
-      resetHandler("auto");
-    }
-    if (goalEasy >= score && goalEasy < 0) {
-      SetTotalWin(totalWin + 1);
-      resetHandler("auto");
-    }
-    if (goalMedium <= score && goalMedium > 0) {
-      SetTotalWin(totalWin + 2);
-      resetHandler("auto");
-    }
-    if (goalMedium >= score && goalMedium < 0) {
-      SetTotalWin(totalWin + 2);
-      resetHandler("auto");
-    }
-    if (goalHard <= score && goalHard > 0) {
-      SetTotalWin(totalWin + 3);
-      resetHandler("auto");
-    }
-    if (goalHard >= score && goalHard < 0) {
-      SetTotalWin(totalWin + 3);
-      resetHandler("auto");
-    }
-  };
 
   return (
     <div className={styles.playArea}>
