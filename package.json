@@ -28,6 +28,8 @@
     "react-dom": "18.2.0",
     "sass": "^1.57.1",
     "styled-components": "^5.3.6",
+    "three": "^0.150.0",
+    "@types/three": "^0.150.0",
     "typescript": "4.9.4"
   }
 }
