@@ -1,0 +1,202 @@
+@import "./_breakpoints"
+
+.authContainer
+  display: flex
+  align-items: center
+  justify-content: center
+  flex: 1
+  padding: 40px 20px
+  min-height: calc(100vh - 140px)
+  box-sizing: border-box
+
+.authCard
+  width: 100%
+  max-width: 450px
+  background: var(--glass-bg)
+  border: 1px solid var(--glass-border)
+  border-radius: 16px
+  padding: 32px
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6)
+  backdrop-filter: blur(16px)
+  -webkit-backdrop-filter: blur(16px)
+  display: flex
+  flex-direction: column
+  gap: 24px
+  
+  @include breakpoint(sm)
+    padding: 24px
+
+.authTitle
+  font-family: var(--font-display)
+  font-size: 24px
+  font-weight: 900
+  letter-spacing: 2px
+  text-align: center
+  text-shadow: 0 0 10px var(--primary-glow)
+  background: linear-gradient(135deg, #ffffff 0%, var(--primary-color) 100%)
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+
+.tabs
+  display: flex
+  border-bottom: 1px solid var(--glass-border)
+
+.tab
+  flex: 1
+  background: none
+  border: none
+  color: var(--text-secondary)
+  font-family: var(--font-display)
+  font-size: 13px
+  font-weight: 700
+  letter-spacing: 1px
+  padding: 12px
+  cursor: pointer
+  transition: all 0.25s ease
+  border-bottom: 2px solid transparent
+  
+  &:hover
+    color: var(--text-primary)
+
+.activeTab
+  color: var(--primary-color)
+  border-bottom-color: var(--primary-color)
+  text-shadow: 0 0 8px var(--primary-glow)
+
+.form
+  display: flex
+  flex-direction: column
+  gap: 16px
+
+.inputGroup
+  display: flex
+  flex-direction: column
+  gap: 6px
+
+.label
+  font-size: 11px
+  font-family: var(--font-display)
+  font-weight: 600
+  letter-spacing: 1px
+  color: var(--text-secondary)
+  text-transform: uppercase
+
+.input
+  background: rgba(255, 255, 255, 0.03)
+  border: 1px solid var(--glass-border)
+  border-radius: 8px
+  padding: 12px
+  font-size: 14px
+  color: var(--text-primary)
+  font-family: var(--font-sans)
+  transition: all 0.25s ease
+  
+  &:focus
+    outline: none
+    border-color: var(--primary-color)
+    box-shadow: 0 0 10px var(--primary-glow)
+    background: rgba(255, 255, 255, 0.05)
+
+.btnSubmit
+  font-family: var(--font-display)
+  font-size: 13px
+  font-weight: 700
+  letter-spacing: 1px
+  text-transform: uppercase
+  color: #030308
+  background: var(--primary-color)
+  border: none
+  padding: 12px
+  border-radius: 8px
+  cursor: pointer
+  transition: all 0.25s ease
+  box-shadow: 0 0 10px var(--primary-glow)
+  margin-top: 8px
+
+  &:hover
+    background: #ffffff
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8)
+    transform: translateY(-1px)
+    
+  &:disabled
+    opacity: 0.5
+    cursor: not-allowed
+    transform: none
+    box-shadow: none
+
+.divider
+  display: flex
+  align-items: center
+  text-align: center
+  font-size: 11px
+  font-family: var(--font-display)
+  color: var(--text-secondary)
+  margin: 8px 0
+  
+  &::before, &::after
+    content: ''
+    flex: 1
+    border-bottom: 1px solid var(--glass-border)
+  
+  &:not(:empty)::before
+    margin-right: 12px
+  
+  &:not(:empty)::after
+    margin-left: 12px
+
+.btnGoogle
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 10px
+  background: rgba(255, 255, 255, 0.05)
+  border: 1px solid var(--glass-border)
+  color: var(--text-primary)
+  font-family: var(--font-display)
+  font-size: 12px
+  font-weight: 700
+  letter-spacing: 1px
+  text-transform: uppercase
+  padding: 12px
+  border-radius: 8px
+  cursor: pointer
+  transition: all 0.25s ease
+  
+  &:hover
+    background: rgba(255, 255, 255, 0.1)
+    border-color: var(--text-primary)
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2)
+
+  .googleIcon
+    width: 18px
+    height: 18px
+
+.btnGuest
+  font-family: var(--font-display)
+  font-size: 12px
+  font-weight: 700
+  letter-spacing: 1px
+  text-transform: uppercase
+  color: #ffd54f
+  background: rgba(255, 213, 79, 0.08)
+  border: 1px solid rgba(255, 213, 79, 0.2)
+  padding: 12px
+  border-radius: 8px
+  cursor: pointer
+  transition: all 0.25s ease
+  
+  &:hover
+    background: #ffd54f
+    color: #030308
+    box-shadow: 0 0 12px rgba(255, 213, 79, 0.4)
+    border-color: transparent
+
+.errorAlert
+  background: rgba(255, 42, 109, 0.1)
+  border: 1px solid var(--error-color)
+  color: var(--error-color)
+  padding: 10px 14px
+  border-radius: 8px
+  font-size: 13px
+  line-height: 1.4
+  text-shadow: 0 0 4px rgba(255, 42, 109, 0.3)

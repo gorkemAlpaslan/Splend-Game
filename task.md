@@ -1,19 +1,34 @@
-# Tasks
+# Tasks - Rebalancing, Visual Upgrades & 6 New Games
 
-- `[x]` Install `three` and `@types/three` dependencies
-- `[x]` Implement `ThreeBg.tsx` for the 3D particle background
-- `[x]` Update `styles/globals.sass` with modern styling variables & Google Fonts
-- `[x]` Refactor `components/games/score-game.tsx` (fix state logic, add SFX, high scores, streaks)
-- `[x]` Update `components/games/score-game-style.module.sass` with glassmorphic styles
-- `[x]` Update `pages/index.tsx` layout and modal styling
-- `[x]` Enlarge the board (780px) and dashboard (700px) layout on desktop & scale sizes proportionally
-- `[x]` Implement the Proximity Radar Scanner on cell hover (real-time Coordinates, Neighbor Sum, Composition readout)
-- `[x]` Add dynamic glowing hover borders on the grid based on neighbor sums (green/red/purple)
-- `[x]` Display Minesweeper-style neighbor sum clues inside opened cells
-- `[x]` Update instructions in the "How to Play" modal to explain scanner and deduction rules
-- `[x]` Add Game Setup screen for selecting Harita Boyutu (Map Size), Zorluk Dereceleri (Difficulty), and Radar Sensor Toggle
-- `[x]` Implement dynamic multiplier scoring math (getSizeMultiplier * getDiffMultiplier * getRadarMultiplier)
-- `[x]` Modify grid coordinates, cells, and neighbor scanning bounds to scale dynamically to 12x12, 16x16, and 20x20 sizes
-- `[x]` Implement hardcore sensor-disabled gameplay mode (suppressing hover glows, indicators, and corner clues)
-- `[x]` Design "Abort Mission" return-to-menu action button
-- `[x]` Make the maximum "CLoSES REMAINING" limit and reset lock dynamically scale based on selected difficulty (12 for Easy, 8 for Medium, 5 for Hard)
+- `[x]` Update `AuthContext.tsx` default stats for new games (`wave_tuner`, `firewall_defuse`, `matrix_runner`, `protocol_stack`, `cipher_decryptor`, `hex_sudoku`)
+- `[x]` Update Lobby (`pages/index.tsx`) to show all 9 game cards
+- `[x]` Update Lobby style (`styles/Lobby.module.sass`) to support grid responsiveness for 9 games
+- `[x]` Update Leaderboard (`pages/leaderboard.tsx`) tabs and Firestore queries for all 9 games
+- `[x]` Fix Quantum Link conduit rotation direction bug & rebalance scoring in `components/games/grid-solver-game.tsx`
+- `[x]` Rebalance scoring in `components/games/memory-matrix-game.tsx`
+- `[x]` Upgrade Three.js particle background in `components/games/ThreeBg.tsx` (Add sine-wave mesh flow, custom window event listeners, color flashes and speed burst animations)
+- `[x]` Implement Game 3: **Wave Tuner (Frequency Matcher)**
+  - `[x]` Create page wrapper: `pages/game/wave-tuner.tsx`
+  - `[x]` Create component: `components/games/wave-tuner-game.tsx`
+  - `[x]` Create styles: `components/games/wave-tuner-style.module.sass`
+- `[x]` Implement Game 4: **Firewall Defuse (Lights Out)**
+  - `[x]` Create page wrapper: `pages/game/firewall-defuse.tsx`
+  - `[x]` Create component: `components/games/firewall-defuse-game.tsx`
+  - `[x]` Create styles: `components/games/firewall-defuse-style.module.sass`
+- `[x]` Implement Game 5: **Matrix Runner (Cyber Snake)**
+  - `[x]` Create page wrapper: `pages/game/matrix-runner.tsx`
+  - `[x]` Create component: `components/games/matrix-runner-game.tsx`
+  - `[x]` Create styles: `components/games/matrix-runner-style.module.sass`
+- `[x]` Implement Game 6: **Protocol Stack (Hanoi Towers)**
+  - `[x]` Create page wrapper: `pages/game/protocol-stack.tsx`
+  - `[x]` Create component: `components/games/protocol-stack-game.tsx`
+  - `[x]` Create styles: `components/games/protocol-stack-style.module.sass`
+- `[x]` Implement Game 7: **Cipher Decryptor (Hex Codebreaker)**
+  - `[x]` Create page wrapper: `pages/game/cipher-decryptor.tsx`
+  - `[x]` Create component: `components/games/cipher-decryptor-game.tsx`
+  - `[x]` Create styles: `components/games/cipher-decryptor-style.module.sass`
+- `[x]` Implement Game 8: **Hex Matrix Sudoku (Hex Sudoku)**
+  - `[x]` Create page wrapper: `pages/game/hex-sudoku.tsx`
+  - `[x]` Create component: `components/games/hex-sudoku-game.tsx`
+  - `[x]` Create styles: `components/games/hex-sudoku-style.module.sass`
+- `[x]` Manually verify all 9 games, rotation fixes, particle visual feedback, and scoring balances

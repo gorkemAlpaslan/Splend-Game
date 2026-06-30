@@ -1,6 +1,8 @@
 import "@/styles/globals.sass";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
+import { AuthProvider } from "@/context/AuthContext";
+import Layout from "@/components/layout/Layout";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [showChild, setShowChild] = useState(false);
@@ -12,13 +14,11 @@ export default function App({ Component, pageProps }: AppProps) {
     return null;
   }
 
-  if (typeof window === "undefined") {
-    return <></>;
-  } else {
-    return (
-      <>
+  return (
+    <AuthProvider>
+      <Layout>
         <Component {...pageProps} />
-      </>
-    );
-  }
+      </Layout>
+    </AuthProvider>
+  );
 }

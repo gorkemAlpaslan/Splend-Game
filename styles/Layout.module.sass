@@ -1,0 +1,195 @@
+@import "./_breakpoints"
+
+.layoutWrapper
+  min-height: 100vh
+  display: flex
+  flex-direction: column
+  position: relative
+  color: var(--text-primary)
+  font-family: var(--font-sans)
+
+.header
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 16px 40px
+  background: var(--glass-bg)
+  border-bottom: 1px solid var(--glass-border)
+  backdrop-filter: blur(12px)
+  -webkit-backdrop-filter: blur(12px)
+  position: sticky
+  top: 0
+  z-index: 100
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)
+  
+  @include breakpoint(md)
+    padding: 16px 20px
+    flex-direction: column
+    gap: 12px
+
+.logoContainer
+  display: flex
+  align-items: center
+  cursor: pointer
+
+.logoText
+  font-family: var(--font-display)
+  font-size: 22px
+  font-weight: 900
+  letter-spacing: 2px
+  text-shadow: 0 0 10px var(--primary-glow)
+  background: linear-gradient(135deg, #ffffff 0%, var(--primary-color) 100%)
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+
+.nav
+  display: flex
+  align-items: center
+  gap: 24px
+  
+  @include breakpoint(md)
+    width: 100%
+    justify-content: center
+    gap: 15px
+
+.navLink
+  font-family: var(--font-display)
+  font-size: 13px
+  font-weight: 600
+  letter-spacing: 1px
+  color: var(--text-secondary)
+  text-decoration: none
+  text-transform: uppercase
+  padding: 6px 12px
+  border-radius: 6px
+  border: 1px solid transparent
+  transition: all 0.25s ease
+
+  &:hover
+    color: var(--primary-color)
+    background: rgba(0, 210, 255, 0.05)
+    border-color: rgba(0, 210, 255, 0.2)
+    text-shadow: 0 0 8px var(--primary-glow)
+
+.activeNavLink
+  color: var(--primary-color)
+  background: rgba(0, 210, 255, 0.08)
+  border-color: rgba(0, 210, 255, 0.3)
+  text-shadow: 0 0 8px var(--primary-glow)
+
+.authWidget
+  display: flex
+  align-items: center
+  gap: 16px
+  
+  @include breakpoint(md)
+    width: 100%
+    justify-content: center
+
+.userBadge
+  display: flex
+  align-items: center
+  gap: 8px
+  background: rgba(255, 255, 255, 0.05)
+  border: 1px solid var(--glass-border)
+  padding: 6px 12px
+  border-radius: 8px
+  font-size: 13px
+
+  .statusDot
+    width: 8px
+    height: 8px
+    border-radius: 50%
+    box-shadow: 0 0 8px currentColor
+  
+  .statusDotOnline
+    background-color: var(--success-color)
+    color: var(--success-color)
+    
+  .statusDotGuest
+    background-color: #ffd54f
+    color: #ffd54f
+
+.userName
+  font-weight: 600
+  max-width: 120px
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+.btnSignIn
+  font-family: var(--font-display)
+  font-size: 12px
+  font-weight: 700
+  letter-spacing: 1px
+  text-transform: uppercase
+  color: #030308
+  background: var(--primary-color)
+  border: none
+  padding: 8px 16px
+  border-radius: 8px
+  cursor: pointer
+  transition: all 0.25s ease
+  box-shadow: 0 0 10px var(--primary-glow)
+
+  &:hover
+    background: #ffffff
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8)
+    transform: translateY(-1px)
+
+.btnSignOut
+  font-family: var(--font-display)
+  font-size: 11px
+  font-weight: 700
+  letter-spacing: 1px
+  text-transform: uppercase
+  color: var(--error-color)
+  background: rgba(255, 42, 109, 0.1)
+  border: 1px solid rgba(255, 42, 109, 0.3)
+  padding: 6px 12px
+  border-radius: 8px
+  cursor: pointer
+  transition: all 0.25s ease
+
+  &:hover
+    background: var(--error-color)
+    color: #030308
+    box-shadow: 0 0 10px var(--error-glow)
+    border-color: transparent
+
+.mainContent
+  flex: 1
+  display: flex
+  flex-direction: column
+  position: relative
+  z-index: 5
+
+.footer
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 24px 40px
+  background: rgba(5, 5, 12, 0.8)
+  border-top: 1px solid var(--glass-border)
+  backdrop-filter: blur(8px)
+  -webkit-backdrop-filter: blur(8px)
+  z-index: 10
+  
+  @include breakpoint(md)
+    padding: 20px
+
+.footerContent
+  font-size: 12px
+  color: var(--text-secondary)
+  text-align: center
+  letter-spacing: 0.5px
+  
+  a
+    color: var(--primary-color)
+    text-decoration: none
+    margin-left: 5px
+    transition: all 0.22s ease
+    
+    &:hover
+      text-shadow: 0 0 6px var(--primary-glow)
+      text-decoration: underline

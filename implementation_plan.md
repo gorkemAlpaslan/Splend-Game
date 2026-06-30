@@ -1,68 +1,84 @@
-# Uygulama Planı - Harita Seçimi, Zorluk Dereceleri ve Radar Ayarı Güncellemesi
+# Implementation Plan - Rebalancing, 3D Enhancements, and 6 New Games
 
-Bu güncelleme ile oyuna şık bir başlangıç ekranı (Setup Menu) ekleyeceğiz. Oyuncular oyuna başlamadan önce harita boyutunu, zorluk derecesini ve Proximity Radar'ın aktif olup olmayacağını seçebilecekler. Bu seçimler oyun içi puan çarpanlarını (Score Multipliers) doğrudan etkileyecektir.
-
----
-
-## 🛠️ Yapılacak Değişiklikler
-
-### 1. Başlangıç Ekranı (Game Setup Screen)
-- **Arayüz Tasarımı**: Glassmorphic tarzda, neon ışıklı ve fütüristik bir "Görev Parametreleri" seçim ekranı tasarlanacak.
-- **Seçenekler**:
-  - **Harita Boyutu (Map Size)**:
-    - `12x12` (Küçük Sektör - 0.8x Çarpan)
-    - `16x16` (Standart Sektör - 1.0x Çarpan)
-    - `20x20` (Geniş Sektör - 1.3x Çarpan)
-  - **Zorluk Derecesi (Difficulty)**:
-    - `Kolay` (Kutulardan -3 ile +3 arası değerler çıkar - 1.0x Çarpan)
-    - `Orta` (Kutulardan -4 ile +4 arası değerler çıkar - 1.5x Çarpan)
-    - `Zor` (Kutulardan -5 ile +5 arası değerler çıkar - 2.0x Çarpan)
-  - **Proximity Radar (Sensör Seçimi)**:
-    - `Aktif` (Sensörler çalışır, komşu toplamlarını gösterir - 1.0x Çarpan)
-    - `Pasif` (Körlemesine oynanır, komşu toplamları gösterilmez - 2.0x Çarpan)
-- **Dinamik Çarpan Göstergesi**: Seçenekler değiştikçe anlık olarak toplam puan çarpanı gösterilecek (örneğin: `ÇARPAN: 3.0x`).
-- **Görevi Başlat Butonu**: Canlı ve parlayan bir `LAUNCH MISSION` butonu ile oyun başlatılacak.
-
-### 2. Oyun İçi Değişiklikler ve Puan Dengesi (Scoring & Balance)
-- **Puanlama Mantığı**:
-  - Alınan baz puanlar (Kolay Hedef = 1, Orta = 2, Zor = 3) seçilen seçeneklerin çarpanları ile çarpılıp en yakın tam sayıya yuvarlanacak:
-    `Kazanılan Puan = Math.round(Baz Puan * HaritaÇarpanı * ZorlukÇarpanı * SensörÇarpanı)`
-  - Örneğin; **20x20 Harita (1.3x)**, **Zor Seviye (2.0x)** ve **Sensör Kapalı (2.0x)** oynayan bir oyuncu:
-    - Toplam Çarpan: `1.3 * 2.0 * 2.0 = 5.2x` olur.
-    - Kolay Hedef: `1 * 5.2 = 5 puan` kazandırır.
-    - Orta Hedef: `2 * 5.2 = 10 puan` kazandırır.
-    - Zor Hedef: `3 * 5.2 = 16 puan` kazandırır.
-- **Aktif Parametreler Paneli**: HUD üzerinde o anki oyun ayarları (`16x16 • Zor • Radar Kapalı`) ve aktif çarpan gösterilecek.
-- **Menüye Dönüş (Quit Round)**: Oyundan istendiğinde çıkıp ana menüye dönebilmek için "GÖREVİ İPTAL ET" (Abort Mission) butonu eklenecek.
-- **Radar Kontrolü**: Sensör kapalı seçildiyse:
-  - Fareyle üzerine gelindiğinde kutular parlamayacak.
-  - Açılan kutularda komşu toplamı ipuçları gösterilmeyecek.
-  - Dashboard'daki sensör paneli `SENSÖR ÇEVRİM DIŞI (Zorlu Mod Çarpanı Aktif)` uyarısı gösterecek.
+We are expanding the **Splend Game** matrix by balancing the scoring metrics across all games to match the Positive & Negative scale, fixing the rotation direction anomaly in Quantum Link, upgrading the global Three.js particle background with interactive event-based warp drives, and adding **6 new mini-games** to make it a total catalog of 9 puzzle games.
 
 ---
 
-## 📂 Güncellenecek Dosyalar
+## 🛠️ User Review Required
 
-### 1. [score-game.tsx](file:///c:/Users/gorke/Documents/GitHub/Splend-Game/components/games/score-game.tsx)
-- Başlangıç ekranını yönetmek için `gameStarted` state'i eklenecek.
-- `gridSize` (12, 16, 20), `difficulty` ("easy", "medium", "hard") ve `radarEnabled` (boolean) state'leri eklenecek.
-- Tahta boyutuna göre dinamik grid sütun ve satır sayısını React inline styles kullanarak `.gameGrid` elemanına uygulayacak yapı kurulacak.
-- Çarpan hesaplama mantığı (`getMultiplier` ve `recordWin` içi) güncellenecek.
-- Oyun içi HUD'a aktif ayar göstergesi ve "Menüye Dön" butonu yerleştirilecek.
-- Radar kapalı olduğunda sensör okumalarını ve kutu içi ipuçlarını maskeleyecek mantık eklenecek.
-
-### 2. [score-game-style.module.sass](file:///c:/Users/gorke/Documents/GitHub/Splend-Game/components/games/score-game-style.module.sass)
-- Başlangıç ekranı (Setup Screen) için gerekli olan `.setupContainer`, `.setupCard`, `.optionGroup`, `.optionTitle`, `.optionCard`, `.activeOption`, `.multiplierBadge` ve `.launchButton` stilleri eklenecek.
-- Oyun içi "Görevi İptal Et" butonu stili eklenecek.
-
-### 3. [pages/index.tsx](file:///c:/Users/gorke/Documents/GitHub/Splend-Game/pages/index.tsx)
-- Modal içindeki kurallara çarpanlar ve zorluk seviyeleri hakkında yeni bir kural maddesi eklenecek.
+> [!IMPORTANT]
+> - **Global Score Re-balancing**: All games will be configured to award between **1 to 5 points** (factoring in difficulty and setup multipliers). This preserves the competitive value of the leaderboard where a single point is highly prized.
+> - **Database Expansion**: The new games' scores will sync seamlessly under `stats.games.<game_id>` via `AuthContext.tsx`.
 
 ---
 
-## 🚀 Doğrulama Planı
+## 📂 Proposed Changes
 
-- **Kurulum Ekranı**: Başlangıç ekranında seçenekler değiştirildiğinde çarpanın anlık ve doğru şekilde güncellendiği doğrulanacak.
-- **Radar Kapama**: Radar kapatılıp oyuna girildiğinde kutuların üzerinde ipucu çıkmadığı, üzerine gelindiğinde parlamadığı ve dashboard sensörünün çevrimdışı yazdığı doğrulanacak.
-- **Dinamik Grid**: 12x12 veya 20x20 seçildiğinde haritanın doğru sayıda kutuyla (144 veya 400) oluştuğu doğrulanacak.
-- **Puanlama Doğrulaması**: Yüksek çarpanlı oyunda kazanılan puanların katlanarak global skora eklendiği doğrulanacak.
+### 1. State Management & Leaderboard Integration
+
+#### [MODIFY] [AuthContext.tsx](file:///c:/Users/gorke/Documents/GitHub/Splend-Game/context/AuthContext.tsx)
+- Add initial states in `DEFAULT_STATS` for the 6 new game IDs:
+  - `wave_tuner`, `firewall_defuse`, `matrix_runner`, `protocol_stack`, `cipher_decryptor`, `hex_sudoku`.
+
+#### [MODIFY] [leaderboard.tsx](file:///c:/Users/gorke/Documents/GitHub/Splend-Game/pages/leaderboard.tsx)
+- Integrate tabs and fetch queries for the 6 new games, rendering leaderboard metrics (Score, Losses, Streak) dynamically.
+
+#### [MODIFY] [index.tsx](file:///c:/Users/gorke/Documents/GitHub/Splend-Game/pages/index.tsx)
+- Render all 9 games inside the **Deployment Directory** catalog.
+- Adjust the layout style to support a multi-row grid system for game cards.
+
+---
+
+### 2. Gameplay Fixes & 3D Upgrades
+
+#### [MODIFY] [grid-solver-game.tsx](file:///c:/Users/gorke/Documents/GitHub/Splend-Game/components/games/grid-solver-game.tsx)
+- **Continuous Rotation Bug**: Let the `tile.rotation` increment grow indefinitely (instead of mapping modulo 4 in the state) to ensure CSS transforms rotate the conduits clockwise continuously without rotating backwards.
+- **Score Re-balancing**: Scale down points to 1 point (Easy), 2 points (Medium), 3 points (Hard).
+
+#### [MODIFY] [memory-matrix-game.tsx](file:///c:/Users/gorke/Documents/GitHub/Splend-Game/components/games/memory-matrix-game.tsx)
+- **Score Re-balancing**: Update game over/victory stats dispatcher to grant 1 point (Easy), 2 points (Medium), 3 points (Hard) upon completing Level 10.
+
+#### [MODIFY] [ThreeBg.tsx](file:///c:/Users/gorke/Documents/GitHub/Splend-Game/components/games/ThreeBg.tsx)
+- **Digital Wave Flow**: Refactor particle positions inside the render loop using a sine wave function `Math.sin(elapsedTime + position.x)` to create a floating digital network mesh.
+- **Interactive Event Listener**: Add window event listeners for `'matrix-event'`. On `'victory'` or `'defeat'`, temporarily color-flash the particles (Green/Red) and increase speed (Warp Drive), then ease back to the original blue/purple state.
+
+---
+
+### 3. Six New Games Implementation
+
+#### [NEW] Wave Tuner (Frequency Matcher)
+- **Components**: `components/games/wave-tuner-game.tsx`, `components/games/wave-tuner-style.module.sass`, `pages/game/wave-tuner.tsx`
+- **Concept**: Use a `<canvas>` to draw two overlapping sine waves: target (green) and player (blue). Adjust Sliders (Amplitude, Frequency, Phase) until waves match.
+
+#### [NEW] Firewall Defuse (Lights Out Puzzle)
+- **Components**: `components/games/firewall-defuse-game.tsx`, `components/games/firewall-defuse-style.module.sass`, `pages/game/firewall-defuse.tsx`
+- **Concept**: A grid of cells (3x3 to 5x5). Clicking one toggles its state and its immediate neighbors (UP/DOWN/LEFT/RIGHT). Turn all cells off to solve.
+
+#### [NEW] Matrix Runner (Cyber Snake)
+- **Components**: `components/games/matrix-runner-game.tsx`, `components/games/matrix-runner-style.module.sass`, `pages/game/matrix-runner.tsx`
+- **Concept**: Retro snake game inside a cyber grid canvas. Collect green data-packets to grow; avoid walls and self-collision.
+
+#### [NEW] Protocol Stack (Packet Hanoi Tower)
+- **Components**: `components/games/protocol-stack-game.tsx`, `components/games/protocol-stack-style.module.sass`, `pages/game/protocol-stack.tsx`
+- **Concept**: Move a stack of network packets from Terminal A to C using B. A larger packet cannot be placed on top of a smaller one.
+
+#### [NEW] Cipher Decryptor (Hex Code Mastermind)
+- **Components**: `components/games/cipher-decryptor-game.tsx`, `components/games/cipher-decryptor-style.module.sass`, `pages/game/cipher-decryptor.tsx`
+- **Concept**: Guess a hidden 4-digit hexadecimal code. Clues indicate how many digits are correct in digit & position (Green lock) vs correct digit but wrong position (Yellow alert).
+
+#### [NEW] Hex Matrix Sudoku (Hex Sudoku)
+- **Components**: `components/games/hex-sudoku-game.tsx`, `components/games/hex-sudoku-style.module.sass`, `pages/game/hex-sudoku.tsx`
+- **Concept**: 4x4 Sudoku grid using values `1`, `2`, `3`, `4`. Complete the empty slots such that no value repeats in any row, column, or 2x2 sector.
+
+---
+
+## 🚀 Verification Plan
+
+### Automated Verification
+- Observe background Next.js dev server output to verify zero TypeScript compile errors.
+
+### Manual Verification
+- Navigate through all 9 games in the lobby directory and test launching them.
+- Check that tab selections on Leaderboard correctly display all 9 tabs.
+- Verify that solving Quantum Link rotates conduits clockwise continuously.
+- Win games to verify Three.js particle bursts (Warp Drive and color shifting).

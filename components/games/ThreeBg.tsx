@@ -31,9 +31,9 @@ const ThreeBg: React.FC = () => {
     const colors = new Float32Array(particlesCount * 3);
 
     for (let i = 0; i < particlesCount * 3; i += 3) {
-      // Position coordinates spread in a 3D sphere/box
+      // Position coordinates spread in a 3D grid/field
       positions[i] = (Math.random() - 0.5) * 110; // x
-      positions[i + 1] = (Math.random() - 0.5) * 110; // y
+      positions[i + 1] = (Math.random() - 0.5) * 60; // y (keep height spread tighter for wave effect)
       positions[i + 2] = (Math.random() - 0.5) * 100; // z
 
       // Particle colors: gradient mix of cyber blue and bright purple
@@ -42,6 +42,10 @@ const ThreeBg: React.FC = () => {
       colors[i + 1] = (1 - mixRatio) * 0.6 + 0.2; // G (cyan hues)
       colors[i + 2] = 0.9; // B (deep neon blue)
     }
+
+    // Keep copies of initial positions and colors for interpolation/wave logic
+    const initialPositions = positions.slice();
+    const initialColors = colors.slice();
 
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -65,7 +69,7 @@ const ThreeBg: React.FC = () => {
 
     // Particle material
     const material = new THREE.PointsMaterial({
-      size: 0.55,
+      size: 0.65,
       map: texture,
       transparent: true,
       blending: THREE.AdditiveBlending,
@@ -75,6 +79,27 @@ const ThreeBg: React.FC = () => {
 
     const points = new THREE.Points(geometry, material);
     scene.add(points);
+
+    // Warp & Event Animations State
+    let speedMultiplier = 1.0;
+    let targetSpeedMultiplier = 1.0;
+    let colorFlashType: "none" | "victory" | "defeat" = "none";
+    let flashIntensity = 0.0;
+
+    const handleMatrixEvent = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail && detail.type === "victory") {
+        targetSpeedMultiplier = 10.0; // Speed warp!
+        colorFlashType = "victory";
+        flashIntensity = 1.0; // Max intensity flash
+      } else if (detail && detail.type === "defeat") {
+        targetSpeedMultiplier = 5.0; // Erratic warp
+        colorFlashType = "defeat";
+        flashIntensity = 1.0;
+      }
+    };
+
+    window.addEventListener("matrix-event", handleMatrixEvent);
 
     // Mouse Tracking for Parallax Shift
     let mouseX = 0;
@@ -108,11 +133,73 @@ const ThreeBg: React.FC = () => {
 
       const elapsedTime = clock.getElapsedTime();
 
-      // Rotation movement
-      points.rotation.y = elapsedTime * 0.03;
-      points.rotation.x = elapsedTime * 0.01;
+      // Warp speed interpolation
+      speedMultiplier += (targetSpeedMultiplier - speedMultiplier) * 0.06;
+      targetSpeedMultiplier += (1.0 - targetSpeedMultiplier) * 0.012; // slowly slide back to 1.0
 
-      // Smooth mouse parallax interpolation (easing)
+      // Color flash fadeout
+      if (flashIntensity > 0) {
+        flashIntensity += (0.0 - flashIntensity) * 0.015; // slow fade
+      }
+
+      // 1. Particle positions: Update with Sine Wave Mesh flow
+      const positionAttr = geometry.getAttribute("position") as THREE.BufferAttribute;
+      const posArray = positionAttr.array as Float32Array;
+
+      // 2. Color flashes: Interpolate colors
+      const colorAttr = geometry.getAttribute("color") as THREE.BufferAttribute;
+      const colArray = colorAttr.array as Float32Array;
+
+      for (let i = 0; i < particlesCount; i++) {
+        const i3 = i * 3;
+        const initX = initialPositions[i3];
+        const initY = initialPositions[i3 + 1];
+        const initZ = initialPositions[i3 + 2];
+
+        // Rhythmic wave oscillation: compute unique offset for each particle based on coordinate grids
+        const waveOffset = Math.sin(elapsedTime * 1.2 + initX * 0.1) * 3.5 + Math.cos(elapsedTime * 0.8 + initZ * 0.08) * 2.5;
+        
+        // Speed up wave frequency when warping
+        const warpWaveOffset = waveOffset * (0.8 + speedMultiplier * 0.2);
+
+        // Apply wave y coordinate shifts
+        posArray[i3 + 1] = initY + warpWaveOffset;
+
+        // Apply visual warp stretching on z coordinates
+        posArray[i3 + 2] = initZ + (speedMultiplier - 1.0) * (initZ * 0.05);
+
+        // Apply Color blending
+        const origR = initialColors[i3];
+        const origG = initialColors[i3 + 1];
+        const origB = initialColors[i3 + 2];
+
+        if (flashIntensity > 0.02) {
+          if (colorFlashType === "victory") {
+            // Success glow - blend into pure success green (0.0, 0.9, 0.4)
+            colArray[i3] = origR * (1.0 - flashIntensity) + 0.0 * flashIntensity;
+            colArray[i3 + 1] = origG * (1.0 - flashIntensity) + 0.9 * flashIntensity;
+            colArray[i3 + 2] = origB * (1.0 - flashIntensity) + 0.4 * flashIntensity;
+          } else if (colorFlashType === "defeat") {
+            // Failure glow - blend into warning red (1.0, 0.1, 0.3)
+            colArray[i3] = origR * (1.0 - flashIntensity) + 1.0 * flashIntensity;
+            colArray[i3 + 1] = origG * (1.0 - flashIntensity) + 0.1 * flashIntensity;
+            colArray[i3 + 2] = origB * (1.0 - flashIntensity) + 0.3 * flashIntensity;
+          }
+        } else {
+          colArray[i3] = origR;
+          colArray[i3 + 1] = origG;
+          colArray[i3 + 2] = origB;
+        }
+      }
+
+      positionAttr.needsUpdate = true;
+      colorAttr.needsUpdate = true;
+
+      // Rotation movement, scaled by active warp multiplier
+      points.rotation.y = elapsedTime * 0.03 * (0.6 + speedMultiplier * 0.4);
+      points.rotation.x = elapsedTime * 0.01 * (0.6 + speedMultiplier * 0.4);
+
+      // Smooth mouse parallax interpolation
       targetX = mouseX * 0.7;
       targetY = mouseY * 0.7;
       points.position.x += (targetX - points.position.x) * 0.05;
@@ -125,6 +212,7 @@ const ThreeBg: React.FC = () => {
 
     // Clean up resources on unmount
     return () => {
+      window.removeEventListener("matrix-event", handleMatrixEvent);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);

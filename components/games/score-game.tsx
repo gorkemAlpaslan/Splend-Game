@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 import styles from "./score-game-style.module.sass";
 
 // Synthesized sound effects engine using browser Web Audio API
@@ -159,11 +161,13 @@ const ScoreGame: React.FC<{}> = () => {
   const [cancelLeft, setCancelLeft] = useState<number>(10);
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
-  // Stats
-  const [totalWin, SetTotalWin] = useState<number>(0);
-  const [totalLose, SetTotalLose] = useState<number>(0);
-  const [winStreak, setWinStreak] = useState<number>(0);
-  const [highScore, setHighScore] = useState<number>(0);
+  // Stats aliases mapped from AuthContext
+  const { stats, updateStats } = useAuth();
+  const pnStats = stats.games.positive_negative || { score: 0, losses: 0, winStreak: 0, highScore: 0 };
+  const totalWin = pnStats.score;
+  const totalLose = pnStats.losses;
+  const winStreak = pnStats.winStreak;
+  const highScore = pnStats.highScore;
 
   const [grid, setGrid] = useState<{ value: number; effect: number }[]>([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -238,20 +242,10 @@ const ScoreGame: React.FC<{}> = () => {
   const [goalHard, setGoalHard] = useState<number>(0);
   const [currentRetreat, SetCurrentRetreat] = useState<number>(0);
 
-  // Initialize values
+  // Initialize values (mute settings only)
   useEffect(() => {
-    // Load local storage keys
     if (typeof window !== "undefined") {
-      const savedWins = localStorage.getItem("splend_wins");
-      const savedLosses = localStorage.getItem("splend_losses");
-      const savedStreak = localStorage.getItem("splend_win_streak");
-      const savedHighScore = localStorage.getItem("splend_high_score");
       const savedMute = localStorage.getItem("splend_muted");
-
-      if (savedWins) SetTotalWin(parseInt(savedWins, 10));
-      if (savedLosses) SetTotalLose(parseInt(savedLosses, 10));
-      if (savedStreak) setWinStreak(parseInt(savedStreak, 10));
-      if (savedHighScore) setHighScore(parseInt(savedHighScore, 10));
       if (savedMute) setIsMuted(savedMute === "true");
     }
   }, []);
@@ -395,35 +389,11 @@ const ScoreGame: React.FC<{}> = () => {
   const recordWin = (points: number) => {
     const mult = getMultiplier();
     const finalPoints = Math.round(points * mult);
-
-    SetTotalWin((prev) => {
-      const next = prev + finalPoints;
-      localStorage.setItem("splend_wins", String(next));
-      return next;
-    });
-
-    setWinStreak((prev) => {
-      const next = prev + 1;
-      localStorage.setItem("splend_win_streak", String(next));
-      setHighScore((currentHigh) => {
-        if (next > currentHigh) {
-          localStorage.setItem("splend_high_score", String(next));
-          return next;
-        }
-        return currentHigh;
-      });
-      return next;
-    });
+    updateStats("positive_negative", finalPoints, true);
   };
 
   const recordLoss = () => {
-    SetTotalLose((prev) => {
-      const next = prev + 1;
-      localStorage.setItem("splend_losses", String(next));
-      return next;
-    });
-    setWinStreak(0);
-    localStorage.setItem("splend_win_streak", "0");
+    updateStats("positive_negative", 0, false);
   };
 
   // Monitor end of round conditions
@@ -561,9 +531,28 @@ const ScoreGame: React.FC<{}> = () => {
             </div>
           </div>
 
-          <button className={styles.launchButton} onClick={() => startGameHandler()}>
-            LAUNCH MISSION
-          </button>
+          <div style={{ display: "flex", gap: "12px", width: "100%" }}>
+            <button className={styles.launchButton} style={{ flex: 2 }} onClick={() => startGameHandler()}>
+              LAUNCH MISSION
+            </button>
+            <Link
+              href="/"
+              className={styles.launchButton}
+              style={{
+                flex: 1,
+                background: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid var(--glass-border)",
+                color: "var(--text-primary)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textDecoration: "none",
+                fontSize: "12px"
+              }}
+            >
+              EXIT LOBBY
+            </Link>
+          </div>
         </div>
       </div>
     );
