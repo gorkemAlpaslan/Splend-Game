@@ -22,8 +22,6 @@ interface RankItem {
 
 const LEADERBOARD_TABS = [
   { id: "global", label: "GLOBAL RANKING", path: "globalScore" },
-  { id: "online_chess", label: "CHESS ONLINE", path: "games.online_chess.score" },
-  { id: "online_battleship", label: "BATTLESHIP ONLINE", path: "games.online_battleship.score" },
   { id: "pn", label: "POSITIVE & NEGATIVE", path: "games.positive_negative.score" },
   { id: "gs", label: "QUANTUM LINK", path: "games.grid_solver.score" },
   { id: "mm", label: "MEMORY MATRIX", path: "games.memory_matrix.score" },
@@ -94,8 +92,6 @@ const LeaderboardPage: React.FC = () => {
   const activeRankings = rankings[activeTab] || [];
 
   const getActiveGameKey = () => {
-    if (activeTab === "online_chess") return "online_chess";
-    if (activeTab === "online_battleship") return "online_battleship";
     if (activeTab === "pn") return "positive_negative";
     if (activeTab === "gs") return "grid_solver";
     if (activeTab === "mm") return "memory_matrix";
