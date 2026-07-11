@@ -1,0 +1,79 @@
+.cell
+  position: relative
+  width: 100%
+  aspect-ratio: 1 / 1
+  border-radius: var(--radius-sm)
+  display: flex
+  justify-content: center
+  align-items: center
+  cursor: pointer
+  user-select: none
+  transition: all var(--transition-fast)
+  border: 1px solid var(--glass-border)
+  background: var(--bg-card)
+  overflow: hidden
+  touch-action: manipulation
+  // Establish container for fluid inner typography
+  container-type: inline-size
+
+  &:active
+    transform: scale(0.95)
+
+.hidden
+  &:hover
+    background: rgba(255, 255, 255, 0.05)
+
+.content
+  position: absolute
+  inset: 0
+  display: flex
+  justify-content: center
+  align-items: center
+  // Ensure content doesn't break boundaries
+  padding: 2cqw
+
+.effectText
+  font-family: var(--font-display)
+  // Scale font exactly relative to the cell's physical width
+  font-size: clamp(10px, 40cqw, 24px)
+  font-weight: 700
+  line-height: 1
+  text-align: center
+  letter-spacing: -0.5px // Tighter tracking to fit multi-digit numbers
+
+.positive
+  background: var(--positive-bg)
+  border-color: var(--positive-color)
+  color: var(--positive-color)
+  box-shadow: inset 0 0 10px var(--positive-glow)
+
+.negative
+  background: var(--negative-bg)
+  border-color: var(--negative-color)
+  color: var(--negative-color)
+  box-shadow: inset 0 0 10px var(--negative-glow)
+
+.neutral
+  background: rgba(255, 255, 255, 0.05)
+  border-color: rgba(255, 255, 255, 0.2)
+  color: var(--text-primary)
+
+.clue
+  position: absolute
+  bottom: 2cqw
+  right: 4cqw
+  font-family: var(--font-display)
+  // Scale clue precisely relative to cell
+  font-size: clamp(8px, 22cqw, 14px)
+  font-weight: 700
+  line-height: 1
+  opacity: 0.8
+
+.cluePos
+  color: var(--positive-color)
+
+.clueNeg
+  color: var(--negative-color)
+
+.clueNeu
+  color: var(--neutral-color)

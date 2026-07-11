@@ -1,0 +1,120 @@
+.hudContainer
+  display: flex
+  flex-direction: column
+  gap: clamp(12px, 2vw, 20px)
+  background: var(--bg-panel)
+  border: 1px solid var(--glass-border)
+  border-radius: var(--radius-md)
+  padding: clamp(12px, 2vw, 20px)
+  backdrop-filter: blur(10px)
+
+.topStats
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  gap: 8px
+
+.statPill
+  display: flex
+  align-items: center
+  gap: 6px
+  background: rgba(0, 0, 0, 0.3)
+  padding: 6px 12px
+  border-radius: var(--radius-xl)
+  border: 1px solid var(--glass-border)
+  min-width: 0
+
+.statLabel
+  font-size: clamp(0.65rem, 1vw, 0.75rem)
+  color: var(--text-secondary)
+  font-weight: 600
+
+.statValue
+  font-family: var(--font-display)
+  font-weight: 700
+  color: var(--text-primary)
+  font-size: clamp(0.875rem, 1.2vw, 1rem)
+
+.iconBtn
+  background: transparent
+  border: 1px solid var(--glass-border)
+  border-radius: var(--radius-xl)
+  padding: 6px 12px
+  cursor: pointer
+  color: var(--text-primary)
+  transition: all var(--transition-fast)
+
+  &:hover
+    background: rgba(255, 255, 255, 0.1)
+
+.actionControls
+  display: flex
+  flex-direction: column
+  gap: clamp(12px, 1.5vw, 16px)
+
+.closesWrapper
+  display: flex
+  justify-content: space-between
+  align-items: center
+  flex-wrap: wrap
+  gap: 8px
+  background: rgba(0, 0, 0, 0.3)
+  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 16px)
+  border-radius: var(--radius-md)
+  border: 1px solid var(--glass-border)
+
+.closesLabel
+  font-family: var(--font-display)
+  font-weight: 700
+  color: var(--text-secondary)
+  font-size: clamp(0.875rem, 1.5vw, 1rem)
+
+.closesValue
+  font-family: var(--font-display)
+  font-size: clamp(1rem, 2vw, 1.25rem)
+  font-weight: 700
+  color: var(--text-primary)
+
+  &.warning
+    color: var(--negative-color)
+
+.buttons
+  display: flex
+  flex-wrap: wrap
+  gap: clamp(8px, 1.5vw, 12px)
+
+.resetBtn, .retreatBtn
+  flex: 1
+  min-width: 100px
+  padding: clamp(10px, 1.5vw, 12px)
+  border: none
+  border-radius: var(--radius-sm)
+  font-family: var(--font-display)
+  font-weight: 700
+  font-size: clamp(0.875rem, 1.5vw, 1rem)
+  cursor: pointer
+  transition: all var(--transition-fast)
+
+.resetBtn
+  background: rgba(255, 255, 255, 0.1)
+  color: var(--text-primary)
+
+  &:hover:not(:disabled)
+    background: rgba(255, 255, 255, 0.2)
+
+  &:disabled
+    opacity: 0.5
+    cursor: not-allowed
+
+.retreatBtn
+  background: rgba(255, 255, 255, 0.05)
+  color: var(--text-muted)
+
+  &.activeRetreat
+    background: var(--primary-color)
+    color: var(--bg-dark)
+    box-shadow: 0 0 15px var(--primary-glow)
+
+    &:hover
+      background: var(--primary-hover)
+      transform: translateY(-2px)

@@ -1,0 +1,35 @@
+.boardWrapper
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 100%
+  height: 100%
+  padding: clamp(8px, 2vw, 16px)
+  perspective: 1000px
+
+.grid
+  display: grid
+  gap: clamp(2px, 0.5vw, 4px)
+  background: var(--bg-panel)
+  padding: clamp(4px, 1vw, 8px)
+  border-radius: var(--radius-md)
+  border: 1px solid var(--glass-border)
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5)
+  
+  // The crucial fix: use width and max-height bound by calc()
+  // to prevent it from growing larger than the center panel 
+  // or the viewport height.
+  width: 100%
+  max-width: calc(100vh - 120px) // Keeps it from expanding endlessly on ultrawides
+  aspect-ratio: 1 / 1
+  
+  // Make sure it doesn't overflow parent flex container
+  min-width: 0
+  min-height: 0
+
+@media (max-width: 768px)
+  .boardWrapper
+    padding: 0
+  .grid
+    max-width: 100%
+    gap: 3px

@@ -1,0 +1,85 @@
+.container
+  display: grid
+  // Use fluid sizing: side panels can shrink, but won't grow larger than 320px
+  // The center panel (board) takes remaining space
+  grid-template-columns: minmax(250px, 320px) minmax(auto, 1fr) minmax(250px, 320px)
+  gap: clamp(12px, 2vw, 24px)
+  max-width: 1600px
+  margin: 0 auto
+  padding: clamp(12px, 2vw, 24px)
+  min-height: calc(100vh - 80px)
+  align-items: start
+
+.leftPanel
+  display: flex
+  flex-direction: column
+  gap: 16px
+  position: sticky
+  top: 24px
+  // Prevent flex children from overflowing
+  min-width: 0
+
+.centerPanel
+  display: flex
+  flex-direction: column // Switch to column to stack TopProgressPanel over Board
+  justify-content: flex-start
+  align-items: center
+  gap: clamp(12px, 2vw, 24px) // Spacing between progress panel and board
+  height: 100%
+  // Allow the board to scale down correctly
+  min-width: 0
+
+.rightPanel
+  display: flex
+  flex-direction: column
+  gap: 16px
+  position: sticky
+  top: 24px
+  min-width: 0
+
+// Laptop & Large Tablets (Landscape)
+@media (max-width: 1280px)
+  .container
+    grid-template-columns: minmax(240px, 280px) minmax(auto, 1fr) minmax(240px, 280px)
+    gap: 16px
+
+// Tablets (Portrait / Narrow Landscape)
+@media (max-width: 1024px)
+  .container
+    // Move inspector below the board, keep HUD on the left
+    grid-template-columns: minmax(250px, 300px) minmax(auto, 1fr)
+    grid-template-areas: "left center" "left right"
+    gap: 16px
+
+  .leftPanel
+    grid-area: left
+
+  .centerPanel
+    grid-area: center
+
+  .rightPanel
+    grid-area: right
+    position: relative
+    top: 0
+
+// Mobile & Small Tablets
+@media (max-width: 768px)
+  .container
+    display: flex
+    flex-direction: column
+    padding: 12px
+    gap: 16px
+    padding-bottom: 40px // Safe area
+    height: auto
+    min-height: 100vh
+
+  .leftPanel, .rightPanel
+    position: relative
+    top: 0
+    width: 100%
+    max-width: none
+    margin: 0
+
+  .centerPanel
+    margin: 10px 0
+    width: 100%

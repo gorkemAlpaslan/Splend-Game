@@ -1,0 +1,157 @@
+.progressContainer
+  background: var(--bg-panel)
+  border: 1px solid var(--glass-border)
+  border-radius: var(--radius-md)
+  padding: clamp(12px, 2vw, 20px)
+  display: flex
+  flex-direction: column
+  gap: clamp(12px, 2vw, 16px)
+  backdrop-filter: blur(10px)
+  width: 100%
+  // Ensures it perfectly aligns with board constraints
+  max-width: calc(100vh - 120px)
+  margin: 0 auto
+
+.topBar
+  display: flex
+  justify-content: space-between
+  align-items: flex-end
+  flex-wrap: wrap
+  gap: 16px
+
+.scoreBlock
+  display: flex
+  flex-direction: column
+  gap: 4px
+
+.scoreLabel
+  font-family: var(--font-display)
+  font-weight: 700
+  color: var(--text-secondary)
+  letter-spacing: 2px
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem)
+
+.mainScore
+  font-family: var(--font-display)
+  font-size: clamp(2rem, 4vw, 2.75rem)
+  font-weight: 700
+  line-height: 1
+  &.pos
+    color: var(--positive-color)
+    text-shadow: 0 0 15px var(--positive-glow)
+  &.neg
+    color: var(--negative-color)
+    text-shadow: 0 0 15px var(--negative-glow)
+  &.neu
+    color: var(--text-primary)
+    text-shadow: none
+
+.metadataBlock
+  display: flex
+  gap: clamp(12px, 2vw, 24px)
+  flex-wrap: wrap
+
+.metaItem
+  display: flex
+  flex-direction: column
+  align-items: flex-end
+  gap: 4px
+
+.metaLabel
+  font-size: clamp(0.65rem, 1.2vw, 0.75rem)
+  color: var(--text-secondary)
+  font-weight: 600
+
+.metaValue
+  font-family: var(--font-display)
+  font-weight: 700
+  font-size: clamp(1rem, 1.5vw, 1.25rem)
+  color: var(--text-primary)
+
+  &.highlightTier
+    color: var(--primary-color)
+    text-shadow: 0 0 10px var(--primary-glow)
+
+.trackArea
+  width: 100%
+
+.progressBarWrapper
+  position: relative
+  height: clamp(28px, 4vw, 36px)
+  background: rgba(0, 0, 0, 0.4)
+  border-radius: var(--radius-xl)
+  display: flex
+  align-items: center
+  overflow: hidden
+  border: 1px solid rgba(255, 255, 255, 0.05)
+
+.trackHalf
+  flex: 1
+  height: 100%
+  position: relative
+
+.centerDivider
+  width: 2px
+  height: 100%
+  background: rgba(255, 255, 255, 0.2)
+  z-index: 2
+
+.fill
+  position: absolute
+  top: 0
+  bottom: 0
+  transition: width var(--transition-normal)
+
+.fillNeg
+  right: 0
+  background: var(--negative-bg)
+  border-left: 3px solid var(--negative-color)
+
+.fillPos
+  left: 0
+  background: var(--positive-bg)
+  border-right: 3px solid var(--positive-color)
+
+.marker
+  position: absolute
+  top: 0
+  height: 100%
+  padding: 0 6px
+  display: flex
+  justify-content: center
+  align-items: center
+  font-family: var(--font-display)
+  font-size: clamp(0.55rem, 1.2vw, 0.75rem)
+  font-weight: 900
+  color: rgba(255, 255, 255, 0.5)
+  background: rgba(0, 0, 0, 0.5)
+  border-left: 1px solid rgba(255, 255, 255, 0.2)
+  border-right: 1px solid rgba(255, 255, 255, 0.2)
+  z-index: 3
+  white-space: nowrap
+
+  &.reached
+    color: var(--bg-dark)
+
+  &.markerPos.reached
+    background: var(--positive-color)
+  &.markerNeg.reached
+    background: var(--negative-color)
+
+// Tablet & Mobile Adjustments
+@media (max-width: 768px)
+  .topBar
+    align-items: flex-start
+    flex-direction: column
+    gap: 12px
+    
+  .metadataBlock
+    width: 100%
+    justify-content: space-between
+    
+  .metaItem
+    align-items: flex-start
+    
+  .marker
+    padding: 0 4px
+    font-size: 0.55rem

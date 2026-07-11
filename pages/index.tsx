@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Head from "next/head";
-import ScoreGame from "@/components/games/score-game";
+import GameEngine from "@/components/games/PositiveNegative/GameEngine";
 import style from "@/styles/Home.module.sass";
 
 export default function PositiveNegativeGamePage() {
@@ -29,7 +29,7 @@ export default function PositiveNegativeGamePage() {
       </header>
 
       {/* Game Area Component */}
-      <ScoreGame />
+      <GameEngine />
 
       {/* Rules Information Modal */}
       {isPopupActive && (
