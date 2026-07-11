@@ -44,6 +44,10 @@
     @include breakpoint(md)
       max-width: 480px
 
+    @include breakpoint(md-sm)
+      padding: 10px
+      border-radius: 12px
+
     .gameGrid
       width: 100%
       height: 100%
@@ -52,90 +56,102 @@
       grid-template-rows: repeat(16, 1fr)
       gap: 3px
 
-    .gameGridButtons
-      display: flex
-      justify-content: center
-      align-items: center
-      width: 100%
-      height: 100%
-      background-color: rgba(255, 255, 255, 0.02)
-      border: 1px solid rgba(255, 255, 255, 0.05)
-      border-radius: 4px
-      color: rgba(255, 255, 255, 0.2)
-      cursor: pointer
-      font-family: var(--font-display)
-      font-size: 15px
-      font-weight: 700
-      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1)
-      position: relative
-      user-select: none
-      box-sizing: border-box
+      @include breakpoint(md-sm)
+        gap: 1.5px
 
-      @include breakpoint(lg)
-        font-size: 13px
+.gameGridButtons
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 100%
+  height: 100%
+  background-color: rgba(255, 255, 255, 0.02)
+  border: 1px solid rgba(255, 255, 255, 0.05)
+  border-radius: 4px
+  color: rgba(255, 255, 255, 0.2)
+  cursor: pointer
+  font-family: var(--font-display)
+  font-size: 15px
+  font-weight: 700
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1)
+  position: relative
+  user-select: none
+  box-sizing: border-box
 
-      @include breakpoint(md)
-        font-size: 10px
+  @include breakpoint(lg)
+    font-size: 13px
 
-      &:hover
-        background-color: rgba(0, 210, 255, 0.08)
-        border-color: var(--primary-color)
-        box-shadow: 0 0 10px var(--primary-glow)
-        transform: scale(1.15)
-        z-index: 10
+  @include breakpoint(md)
+    font-size: 10px
 
-    .gameGridItemActive
-      background-color: rgba(0, 230, 118, 0.15) !important
-      border-color: var(--success-color) !important
-      box-shadow: 0 0 12px var(--success-glow) !important
-      color: var(--success-color) !important
-      transform: rotateY(360deg)
-      
-      &:hover
-        background-color: rgba(0, 230, 118, 0.25) !important
-        box-shadow: 0 0 18px var(--success-glow) !important
+  @include breakpoint(md-sm)
+    font-size: 7.5px
 
-    .gameGridItemNegative
-      background-color: rgba(255, 42, 109, 0.15) !important
-      border-color: var(--error-color) !important
-      box-shadow: 0 0 12px var(--error-glow) !important
-      color: var(--error-color) !important
-      transform: rotateY(360deg)
-      
-      &:hover
-        background-color: rgba(255, 42, 109, 0.25) !important
-        box-shadow: 0 0 18px var(--error-glow) !important
+  &:hover
+    background-color: rgba(0, 210, 255, 0.08)
+    border-color: var(--primary-color)
+    box-shadow: 0 0 10px var(--primary-glow)
+    transform: scale(1.15)
+    z-index: 10
 
-    .gameGridItemZero
-      background-color: rgba(136, 142, 194, 0.15) !important
-      border-color: var(--neutral-color) !important
-      color: var(--text-secondary) !important
-      transform: rotateY(360deg)
-      
-      &:hover
-        background-color: rgba(136, 142, 194, 0.25) !important
-        box-shadow: 0 0 12px var(--neutral-glow) !important
+.gameGridItemActive
+  background-color: rgba(0, 230, 118, 0.15) !important
+  border-color: var(--success-color) !important
+  box-shadow: 0 0 12px var(--success-glow) !important
+  color: var(--success-color) !important
+  transform: rotateY(360deg)
+  
+  &:hover
+    background-color: rgba(0, 230, 118, 0.25) !important
+    box-shadow: 0 0 18px var(--success-glow) !important
 
-    .effectText
-      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)
-      font-weight: 800
+.gameGridItemNegative
+  background-color: rgba(255, 42, 109, 0.15) !important
+  border-color: var(--error-color) !important
+  box-shadow: 0 0 12px var(--error-glow) !important
+  color: var(--error-color) !important
+  transform: rotateY(360deg)
+  
+  &:hover
+    background-color: rgba(255, 42, 109, 0.25) !important
+    box-shadow: 0 0 18px var(--error-glow) !important
 
-    .neighborSumClue
-      position: absolute
-      bottom: 2px
-      right: 4px
-      font-size: 8px
-      font-weight: 800
-      opacity: 0.65
-      letter-spacing: 0px
-      pointer-events: none
-      line-height: 1
-      
-      @include breakpoint(md)
-        font-size: 6.5px
-        bottom: 1px
-        right: 2px
+.gameGridItemZero
+  background-color: rgba(136, 142, 194, 0.15) !important
+  border-color: var(--neutral-color) !important
+  color: var(--text-secondary) !important
+  transform: rotateY(360deg)
+  
+  &:hover
+    background-color: rgba(136, 142, 194, 0.25) !important
+    box-shadow: 0 0 12px var(--neutral-glow) !important
 
+.effectText
+  animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  font-weight: 800
+
+.neighborSumClue
+  position: absolute
+  bottom: 2px
+  right: 4px
+  font-size: 8px
+  font-weight: 800
+  opacity: 0.65
+  letter-spacing: 0px
+  pointer-events: none
+  line-height: 1
+  
+  @include breakpoint(md)
+    font-size: 6.5px
+    bottom: 1px
+    right: 2px
+
+  @include breakpoint(md-sm)
+    font-size: 5px
+    bottom: 0.5px
+    right: 1px
+
+.playArea
   .gameStats
     width: 100%
     max-width: 760px
@@ -171,11 +187,20 @@
       align-items: center
       width: 100%
 
+      @include breakpoint(md-sm)
+        flex-wrap: wrap
+        gap: 15px
+        justify-content: center
+
       .activeSettingsDisplay
         display: flex
         flex-direction: column
         align-items: flex-start
         gap: 4px
+
+        @include breakpoint(md-sm)
+          align-items: center
+          width: 100%
 
         .settingsText
           font-family: var(--font-display)
@@ -196,6 +221,11 @@
         display: flex
         gap: 20px
 
+        @include breakpoint(md-sm)
+          gap: 10px
+          width: 100%
+          justify-content: center
+
         .streakBadge
           display: flex
           flex-direction: column
@@ -205,6 +235,10 @@
           padding: 10px 20px
           align-items: center
           min-width: 120px
+
+          @include breakpoint(md-sm)
+            min-width: 80px
+            padding: 6px 12px
 
           .badgeLabel
             font-size: 11px
@@ -220,6 +254,9 @@
             color: var(--primary-color)
             text-shadow: 0 0 8px var(--primary-glow)
 
+            @include breakpoint(md-sm)
+              font-size: 18px
+
       .soundControl
         display: flex
         align-items: center
@@ -233,6 +270,10 @@
         cursor: pointer
         transition: all 0.2s ease
 
+        @include breakpoint(md-sm)
+          width: 40px
+          height: 40px
+
         &:hover
           color: var(--text-primary)
           border-color: var(--glass-border-hover)
@@ -244,6 +285,9 @@
       gap: 24px
       width: 100%
 
+      @include breakpoint(md-sm)
+        gap: 12px
+
       .scoreDigitalWrapper
         flex: 1.2
         background: rgba(0, 0, 0, 0.25)
@@ -254,6 +298,10 @@
         flex-direction: column
         align-items: center
         box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5)
+
+        @include breakpoint(md-sm)
+          padding: 10px
+          border-radius: 10px
 
       .targetDisplayWrapper
         flex: 0.8
@@ -267,6 +315,10 @@
         box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5)
         justify-content: center
 
+        @include breakpoint(md-sm)
+          padding: 10px
+          border-radius: 10px
+
       .scoreTitle
         font-size: 12px
         color: var(--text-secondary)
@@ -274,12 +326,18 @@
         letter-spacing: 1.2px
         text-transform: uppercase
 
+        @include breakpoint(md-sm)
+          font-size: 9px
+
       .scoreNumber
         font-family: var(--font-display)
         font-size: 56px
         font-weight: 900
         color: var(--text-primary)
         margin-top: 2px
+
+        @include breakpoint(md-sm)
+          font-size: 32px
 
       .targetType
         font-family: var(--font-display)
@@ -422,6 +480,10 @@
       width: 100%
       margin: 16px 0
 
+      @include breakpoint(md-sm)
+        gap: 8px
+        margin: 10px 0
+
       .targetCard
         background: rgba(255, 255, 255, 0.02)
         border: 1px solid var(--glass-border)
@@ -432,6 +494,10 @@
         align-items: center
         transition: all 0.25s ease
 
+        @include breakpoint(md-sm)
+          padding: 10px 4px
+          border-radius: 6px
+
         .cardGoalTitle
           font-size: 11px
           color: var(--text-secondary)
@@ -440,11 +506,17 @@
           margin-bottom: 4px
           text-transform: uppercase
 
+          @include breakpoint(md-sm)
+            font-size: 8.5px
+
         .cardGoalValue
           font-family: var(--font-display)
           font-size: 28px
           font-weight: 800
           color: rgba(255, 255, 255, 0.85)
+
+          @include breakpoint(md-sm)
+            font-size: 18px
 
         .cardStatus
           font-size: 11px
@@ -452,6 +524,10 @@
           color: var(--text-secondary)
           margin-top: 5px
           letter-spacing: 0.5px
+
+          @include breakpoint(md-sm)
+            font-size: 8px
+            margin-top: 2px
 
       .targetCardActive
         background: rgba(0, 230, 118, 0.06)
@@ -532,6 +608,9 @@
         border-radius: 10px
         padding: 20px 24px
 
+        @include breakpoint(md-sm)
+          padding: 12px 16px
+
         .closesHeader
           display: flex
           justify-content: space-between
@@ -553,12 +632,18 @@
           width: 100%
           gap: 6px
 
+          @include breakpoint(md-sm)
+            gap: 4px
+
           .closesDot
             flex: 1
             height: 10px
             background: rgba(255, 255, 255, 0.05)
             border-radius: 3px
             transition: all 0.3s ease
+
+            @include breakpoint(md-sm)
+              height: 6px
 
           .dotActive
             background: var(--primary-color)
@@ -572,6 +657,10 @@
         display: flex
         gap: 24px
         width: 100%
+
+        @include breakpoint(md-sm)
+          flex-direction: column
+          gap: 12px
 
         .actionButton
           flex: 1
@@ -587,6 +676,10 @@
           gap: 4px
           transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1)
           font-family: var(--font-sans)
+
+          @include breakpoint(md-sm)
+            width: 100%
+            padding: 12px
 
           &:hover:not(:disabled)
             background: rgba(255, 255, 255, 0.06)
@@ -775,6 +868,10 @@
     @include breakpoint(md)
       padding: 24px
 
+    @include breakpoint(md-sm)
+      padding: 16px 12px
+      border-radius: 12px
+
     .setupTitle
       font-family: var(--font-display)
       font-size: 26px
@@ -789,6 +886,10 @@
       @include breakpoint(md)
         font-size: 20px
 
+      @include breakpoint(md-sm)
+        font-size: 16px
+        margin-bottom: 6px
+
     .setupSubtitle
       font-family: var(--font-sans)
       font-size: 13px
@@ -797,12 +898,21 @@
       line-height: 1.6
       max-width: 540px
 
+      @include breakpoint(md-sm)
+        margin-bottom: 15px
+        font-size: 11px
+        line-height: 1.4
+
     .optionsWrapper
       display: flex
       flex-direction: column
       gap: 24px
       width: 100%
       margin-bottom: 30px
+
+      @include breakpoint(md-sm)
+        margin-bottom: 15px
+        gap: 12px
 
       .optionGroup
         display: flex
@@ -825,8 +935,11 @@
           width: 100%
 
           @include breakpoint(md)
-            flex-direction: column
-            gap: 10px
+            flex-direction: row
+            gap: 8px
+
+          @include breakpoint(md-sm)
+            gap: 6px
 
           .optionCard
             flex: 1
@@ -841,6 +954,16 @@
             gap: 6px
             transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1)
 
+            @include breakpoint(md)
+              padding: 10px 4px
+              border-radius: 8px
+              gap: 4px
+
+            @include breakpoint(md-sm)
+              padding: 8px 2px
+              border-radius: 6px
+              gap: 2px
+
             &:hover
               background: rgba(255, 255, 255, 0.05)
               border-color: rgba(255, 255, 255, 0.2)
@@ -853,10 +976,17 @@
               color: var(--text-primary)
               letter-spacing: 1px
 
+              @include breakpoint(md-sm)
+                font-size: 11px
+
             .optionLabel
               font-size: 9px
               color: var(--text-secondary)
               text-transform: uppercase
+
+              @include breakpoint(md-sm)
+                font-size: 7px
+                text-align: center
 
           .activeOption
             background: rgba(0, 210, 255, 0.06) !important
@@ -875,6 +1005,9 @@
       justify-content: center
       margin-bottom: 30px
 
+      @include breakpoint(md-sm)
+        margin-bottom: 15px
+
       .multiplierBadge
         background: rgba(0, 230, 118, 0.05)
         border: 1px solid rgba(0, 230, 118, 0.2)
@@ -885,6 +1018,11 @@
         align-items: center
         min-width: 250px
 
+        @include breakpoint(md-sm)
+          min-width: 180px
+          padding: 8px 16px
+          border-radius: 8px
+
         .badgeLabel
           font-size: 9px
           color: var(--success-color)
@@ -893,10 +1031,17 @@
           text-transform: uppercase
           margin-bottom: 6px
 
+          @include breakpoint(md-sm)
+            font-size: 8px
+            margin-bottom: 3px
+
         .multiplierVal
           font-family: var(--font-display)
           font-size: 32px
           font-weight: 900
+
+          @include breakpoint(md-sm)
+            font-size: 22px
           color: var(--success-color)
           text-shadow: 0 0 10px var(--success-glow)
 
@@ -915,9 +1060,378 @@
       transition: all 0.25s ease
       box-shadow: 0 4px 20px rgba(0, 210, 255, 0.3)
 
+      @include breakpoint(md-sm)
+        padding: 12px
+        font-size: 14px
+        border-radius: 8px
+
       &:hover
         transform: translateY(-2px)
         box-shadow: 0 8px 30px rgba(0, 210, 255, 0.5)
 
       &:active
         transform: translateY(0)
+
+.mobilePlayArea
+  display: flex
+  flex-direction: column
+  width: 100%
+  height: calc(100vh - 65px)
+  padding: 10px
+  gap: 12px
+  box-sizing: border-box
+  overflow: hidden
+  justify-content: space-between
+
+  @include breakpoint(md-sm)
+    padding: 6px
+    gap: 8px
+
+  .mobileQuickStats
+    display: flex
+    align-items: center
+    justify-content: space-between
+    width: 100%
+    gap: 8px
+    background: rgba(255, 255, 255, 0.02)
+    border: 1px solid var(--glass-border)
+    padding: 8px 12px
+    border-radius: 10px
+    box-sizing: border-box
+
+    @include breakpoint(md-sm)
+      padding: 6px 10px
+      border-radius: 8px
+
+    .mobileStatBadge
+      display: flex
+      align-items: center
+      gap: 6px
+      font-size: 11px
+      font-weight: 800
+
+      @include breakpoint(md-sm)
+        font-size: 9px
+        gap: 3px
+
+      .mobileBadgeLabel
+        color: var(--text-secondary)
+
+      .mobileBadgeValue
+        font-family: var(--font-display)
+        color: var(--primary-color)
+        text-shadow: 0 0 6px var(--primary-glow)
+
+      .closesWarning
+        color: var(--error-color) !important
+        text-shadow: 0 0 6px var(--error-glow) !important
+        animation: pulse 1s infinite alternate
+
+    .mobileSoundControl
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 28px
+      height: 28px
+      border-radius: 50%
+      background: rgba(255, 255, 255, 0.04)
+      border: 1px solid var(--glass-border)
+      color: var(--text-secondary)
+      cursor: pointer
+
+      @include breakpoint(md-sm)
+        width: 24px
+        height: 24px
+
+  .mobileScoreBar
+    display: flex
+    align-items: center
+    width: 100%
+    gap: 12px
+    background: rgba(0, 0, 0, 0.2)
+    border: 1px solid rgba(255, 255, 255, 0.02)
+    padding: 8px 12px
+    border-radius: 12px
+    box-sizing: border-box
+
+    @include breakpoint(md-sm)
+      padding: 6px 8px
+      border-radius: 8px
+      gap: 8px
+
+    .mobileScoreWrapper, .mobileTargetTypeWrapper
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      min-width: 60px
+
+      @include breakpoint(md-sm)
+        min-width: 45px
+
+      .mobileScoreTitle
+        font-size: 9px
+        font-weight: 700
+        color: var(--text-secondary)
+        text-transform: uppercase
+        letter-spacing: 0.5px
+
+        @include breakpoint(md-sm)
+          font-size: 8px
+
+      .mobileScoreNum
+        font-family: var(--font-display)
+        font-size: 20px
+        font-weight: 900
+
+        @include breakpoint(md-sm)
+          font-size: 16px
+
+      .mobileTargetType
+        font-family: var(--font-display)
+        font-size: 14px
+        font-weight: 900
+        margin-top: 2px
+
+        @include breakpoint(md-sm)
+          font-size: 11px
+
+    .mobileProgressWrapper
+      flex: 1
+      display: flex
+      align-items: center
+      height: 20px
+      background: rgba(0, 0, 0, 0.3)
+      border: 1px solid rgba(255, 255, 255, 0.05)
+      border-radius: 10px
+      position: relative
+      padding: 0 2px
+
+      .mobileProgressTrack
+        display: flex
+        width: 100%
+        height: 100%
+        align-items: center
+        position: relative
+
+      .mobileProgressHalf
+        flex: 1
+        height: 100%
+        position: relative
+        display: flex
+        align-items: center
+
+        &:first-child
+          justify-content: flex-end
+          border-right: 1px solid rgba(255, 255, 255, 0.15)
+
+        &:last-child
+          justify-content: flex-start
+
+      .mobileFillProgress
+        height: 10px
+        border-radius: 5px
+
+      .mobileCenterNode
+        width: 8px
+        height: 8px
+        border-radius: 50%
+        background: #ffffff
+        box-shadow: 0 0 4px #ffffff
+        position: absolute
+        left: calc(50% - 4px)
+        z-index: 5
+
+      .mobileGoalMarker
+        position: absolute
+        top: -6px
+        width: 12px
+        height: 32px
+        display: flex
+        justify-content: center
+        z-index: 4
+
+        &::before
+          content: ""
+          width: 1.5px
+          height: 20px
+          background: rgba(255, 255, 255, 0.25)
+          position: absolute
+          top: 6px
+
+        span
+          font-family: var(--font-display)
+          font-size: 7px
+          font-weight: 900
+          background: #0b0b1a
+          color: var(--text-secondary)
+          border: 0.5px solid rgba(255, 255, 255, 0.15)
+          width: 12px
+          height: 12px
+          border-radius: 50%
+          display: flex
+          align-items: center
+          justify-content: center
+          z-index: 6
+
+      .markerNeg
+        transform: translateX(6px)
+        &::before
+          right: 5px
+
+      .markerPos
+        transform: translateX(-6px)
+        &::before
+          left: 5px
+
+      .markerReached
+        &::before
+          background: var(--success-color)
+          box-shadow: 0 0 6px var(--success-glow)
+
+        span
+          background: var(--success-color)
+          border-color: var(--success-color)
+          color: #030308
+          box-shadow: 0 0 6px var(--success-glow)
+
+  .mobileTargets
+    display: flex
+    gap: 8px
+    width: 100%
+    justify-content: space-between
+
+    .mobileTargetChip
+      flex: 1
+      background: rgba(255, 255, 255, 0.02)
+      border: 1px solid var(--glass-border)
+      border-radius: 6px
+      padding: 6px 4px
+      text-align: center
+      font-size: 10px
+      font-weight: 800
+      color: var(--text-secondary)
+      text-transform: uppercase
+
+      @include breakpoint(md-sm)
+        font-size: 8px
+        padding: 4px 2px
+
+    .chipReached
+      background: rgba(0, 230, 118, 0.06)
+      border-color: rgba(0, 230, 118, 0.3)
+      color: var(--success-color)
+      text-shadow: 0 0 6px var(--success-glow)
+
+  .mobileGridWrapper
+    flex: 1
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 100%
+    min-height: 0
+    box-sizing: border-box
+
+    .mobileGrid
+      width: 100%
+      max-width: 95vw
+      max-height: 48vh
+      aspect-ratio: 1
+      display: grid
+      gap: 1.5px
+      background: var(--glass-bg)
+      border: 1px solid var(--glass-border)
+      border-radius: 12px
+      padding: 8px
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5)
+      backdrop-filter: blur(12px)
+      -webkit-backdrop-filter: blur(12px)
+      box-sizing: border-box
+
+      @include breakpoint(md-sm)
+        padding: 5px
+        gap: 1px
+
+  .mobileRadarScanner
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 100%
+    height: 28px
+    background: rgba(0, 0, 0, 0.25)
+    border: 1px solid rgba(255, 255, 255, 0.03)
+    border-radius: 8px
+    font-size: 10px
+    font-weight: 800
+    letter-spacing: 0.5px
+    box-sizing: border-box
+
+    @include breakpoint(md-sm)
+      font-size: 8px
+      height: 24px
+
+    .mobileRadarData
+      display: flex
+      align-items: center
+      gap: 10px
+
+      @include breakpoint(md-sm)
+        gap: 6px
+
+      .mobileRadarDivider
+        color: rgba(255, 255, 255, 0.15)
+
+    .mobileRadarPlaceholder
+      color: var(--text-secondary)
+
+    .mobileRadarDisabled
+      color: var(--text-secondary)
+      opacity: 0.5
+
+  .mobileActionButtons
+    display: flex
+    width: 100%
+    gap: 10px
+
+    @include breakpoint(md-sm)
+      gap: 6px
+
+    .mobileActionButton
+      flex: 1
+      background: rgba(255, 255, 255, 0.02)
+      border: 1px solid var(--glass-border)
+      border-radius: 10px
+      padding: 12px 6px
+      cursor: pointer
+      display: flex
+      justify-content: center
+      align-items: center
+      color: var(--text-primary)
+      font-family: var(--font-display)
+      font-weight: 900
+      font-size: 11px
+      letter-spacing: 1px
+      transition: all 0.2s ease
+
+      @include breakpoint(md-sm)
+        padding: 8px 4px
+        font-size: 9px
+        border-radius: 6px
+
+      &:disabled
+        opacity: 0.3
+        cursor: not-allowed
+
+      &.retreatActive
+        background: linear-gradient(135deg, var(--success-color) 0%, #00b0ff 100%)
+        color: #030308
+        border: none
+        box-shadow: 0 0 10px var(--success-glow)
+
+    .mobileAbortButton
+      flex: 0.6
+      border-color: rgba(255, 42, 109, 0.2)
+      color: var(--error-color)
+
+      &:hover
+        background: rgba(255, 42, 109, 0.05)

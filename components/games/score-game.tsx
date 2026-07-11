@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
 import styles from "./score-game-style.module.sass";
 
 // Synthesized sound effects engine using browser Web Audio API
@@ -160,14 +158,72 @@ const ScoreGame: React.FC<{}> = () => {
   const [score, setScore] = useState<number>(0);
   const [cancelLeft, setCancelLeft] = useState<number>(10);
   const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isTouchDevice, setIsTouchDevice] = useState<boolean>(false);
+  const [isMobileLayout, setIsMobileLayout] = useState<boolean>(false);
 
-  // Stats aliases mapped from AuthContext
-  const { stats, updateStats } = useAuth();
-  const pnStats = stats.games.positive_negative || { score: 0, losses: 0, winStreak: 0, highScore: 0 };
-  const totalWin = pnStats.score;
-  const totalLose = pnStats.losses;
-  const winStreak = pnStats.winStreak;
-  const highScore = pnStats.highScore;
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window);
+      
+      const media = window.matchMedia("(max-width: 1024px)");
+      setIsMobileLayout(media.matches);
+      const listener = (e: MediaQueryListEvent) => setIsMobileLayout(e.matches);
+      media.addEventListener("change", listener);
+      return () => media.removeEventListener("change", listener);
+    }
+  }, []);
+
+  // Local Stats Management in localStorage
+  const [stats, setStats] = useState<{ score: number; losses: number; winStreak: number; highScore: number }>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("pn_local_stats");
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          console.error("Failed to parse local stats", e);
+        }
+      }
+    }
+    return { score: 0, losses: 0, winStreak: 0, highScore: 0 };
+  });
+
+  const totalWin = stats.score;
+  const totalLose = stats.losses;
+  const winStreak = stats.winStreak;
+  const highScore = stats.highScore;
+
+  const updateStatsLocal = (pointsAdded: number, isWin: boolean) => {
+    setStats((prev) => {
+      let newScore = prev.score;
+      let newLosses = prev.losses;
+      let newStreak = prev.winStreak;
+      let newHighScore = prev.highScore;
+
+      if (isWin) {
+        newScore += pointsAdded;
+        newStreak += 1;
+        if (newStreak > newHighScore) {
+          newHighScore = newStreak;
+        }
+      } else {
+        newLosses += 1;
+        newStreak = 0;
+      }
+
+      const next = {
+        score: newScore,
+        losses: newLosses,
+        winStreak: newStreak,
+        highScore: newHighScore,
+      };
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("pn_local_stats", JSON.stringify(next));
+      }
+      return next;
+    });
+  };
 
   const [grid, setGrid] = useState<{ value: number; effect: number }[]>([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -325,8 +381,17 @@ const ScoreGame: React.FC<{}> = () => {
   };
 
   const handleClick = (index: number) => {
+    const isOpened = grid[index].value === 1;
+
+    if (!isOpened && radarEnabled && isTouchDevice) {
+      if (hoveredIndex !== index) {
+        setHoveredIndex(index);
+        return; // First tap: Select/scan the cell
+      }
+    }
+
     const newGrid = [...grid];
-    const isClosing = newGrid[index].value === 1;
+    const isClosing = isOpened;
 
     // Trigger audio & status
     if (isClosing) {
@@ -340,6 +405,7 @@ const ScoreGame: React.FC<{}> = () => {
       if (val > 0) playSynthSound("positive", isMuted);
       else if (val < 0) playSynthSound("negative", isMuted);
       else playSynthSound("click", isMuted);
+      setHoveredIndex(null); // Clear scanning on reveal
     }
 
     setGrid(newGrid);
@@ -389,11 +455,11 @@ const ScoreGame: React.FC<{}> = () => {
   const recordWin = (points: number) => {
     const mult = getMultiplier();
     const finalPoints = Math.round(points * mult);
-    updateStats("positive_negative", finalPoints, true);
+    updateStatsLocal(finalPoints, true);
   };
 
   const recordLoss = () => {
-    updateStats("positive_negative", 0, false);
+    updateStatsLocal(0, false);
   };
 
   // Monitor end of round conditions
@@ -532,27 +598,242 @@ const ScoreGame: React.FC<{}> = () => {
           </div>
 
           <div style={{ display: "flex", gap: "12px", width: "100%" }}>
-            <button className={styles.launchButton} style={{ flex: 2 }} onClick={() => startGameHandler()}>
+            <button className={styles.launchButton} style={{ width: "100%" }} onClick={() => startGameHandler()}>
               LAUNCH MISSION
             </button>
-            <Link
-              href="/"
-              className={styles.launchButton}
-              style={{
-                flex: 1,
-                background: "rgba(255, 255, 255, 0.05)",
-                border: "1px solid var(--glass-border)",
-                color: "var(--text-primary)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textDecoration: "none",
-                fontSize: "12px"
-              }}
-            >
-              EXIT LOBBY
-            </Link>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isMobileLayout) {
+    return (
+      <div className={styles.mobilePlayArea}>
+        {/* Row 1: Quick Stats (Streak, Best, Closes, Sound) */}
+        <div className={styles.mobileQuickStats}>
+          <div className={styles.mobileStatBadge}>
+            <span className={styles.mobileBadgeLabel}>STREAK:</span>
+            <span className={styles.mobileBadgeValue}>{winStreak}</span>
+          </div>
+          <div className={styles.mobileStatBadge}>
+            <span className={styles.mobileBadgeLabel}>BEST:</span>
+            <span className={styles.mobileBadgeValue}>{highScore}</span>
+          </div>
+          <div className={styles.mobileStatBadge}>
+            <span className={styles.mobileBadgeLabel}>CLOSES:</span>
+            <span className={`${styles.mobileBadgeValue} ${cancelLeft <= Math.max(1, Math.floor(getMaxCloses(difficulty) / 3)) ? styles.closesWarning : ""}`}>
+              {cancelLeft}/{getMaxCloses(difficulty)}
+            </span>
+          </div>
+          <div className={styles.mobileSoundControl} onClick={toggleMute}>
+            {isMuted ? (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M5.889 16H2a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h3.889l5.294-4.332a.5.5 0 0 1 .817.387v16.273a.5.5 0 0 1-.817.387L5.889 16zm13.517-4 2.293-2.293a1 1 0 0 0-1.414-1.414L18 10.586l-2.293-2.293a1 1 0 0 0-1.414 1.414L16.586 12l-2.293 2.293a1 1 0 0 0 1.414 1.414L18 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L19.406 12z"/>
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M5.889 16H2a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h3.889l5.294-4.332a.5.5 0 0 1 .817.387v16.273a.5.5 0 0 1-.817.387L5.889 16zm10.743-9.92a1 1 0 1 1 1.414-1.414c3.42 3.42 3.42 8.963 0 12.383a1 1 0 1 1-1.414-1.414c2.639-2.639 2.639-6.916 0-9.555zM14 9.17a1 1 0 1 1 1.414-1.414c1.22 1.22 1.22 3.208 0 4.428a1 1 0 1 1-1.414-1.414c.44-.44.44-1.16 0-1.6z"/>
+              </svg>
+            )}
+          </div>
+        </div>
+
+        {/* Row 2: Score & Targets Type / Progress bar */}
+        <div className={styles.mobileScoreBar}>
+          <div className={styles.mobileScoreWrapper}>
+            <div className={styles.mobileScoreTitle}>SCORE</div>
+            <div className={`${styles.mobileScoreNum} ${score > 0 ? styles.scorePos : score < 0 ? styles.scoreNeg : ""}`}>
+              {score > 0 ? `+${score}` : score}
+            </div>
+          </div>
+          <div className={styles.mobileProgressWrapper}>
+            <div className={styles.mobileProgressTrack}>
+              {/* Left Track (Negative) */}
+              <div className={styles.mobileProgressHalf}>
+                <div
+                  className={`${styles.mobileFillProgress} ${styles.fillNeg}`}
+                  style={{ width: score < 0 ? `${getPercent(score)}%` : "0%" }}
+                />
+                {goalEasy < 0 && (
+                  <>
+                    <div
+                      className={`${styles.mobileGoalMarker} ${styles.markerNeg} ${isEasyReached ? styles.markerReached : ""}`}
+                      style={{ right: `${getPercent(goalEasy)}%` }}
+                    >
+                      <span>E</span>
+                    </div>
+                    <div
+                      className={`${styles.mobileGoalMarker} ${styles.markerNeg} ${isMedReached ? styles.markerReached : ""}`}
+                      style={{ right: `${getPercent(goalMedium)}%` }}
+                    >
+                      <span>M</span>
+                    </div>
+                    <div
+                      className={`${styles.mobileGoalMarker} ${styles.markerNeg} ${isHardReached ? styles.markerReached : ""}`}
+                      style={{ right: `${getPercent(goalHard)}%` }}
+                    >
+                      <span>H</span>
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className={styles.mobileCenterNode} />
+              {/* Right Track (Positive) */}
+              <div className={styles.mobileProgressHalf}>
+                <div
+                  className={`${styles.mobileFillProgress} ${styles.fillPos}`}
+                  style={{ width: score > 0 ? `${getPercent(score)}%` : "0%" }}
+                />
+                {goalEasy > 0 && (
+                  <>
+                    <div
+                      className={`${styles.mobileGoalMarker} ${styles.markerPos} ${isEasyReached ? styles.markerReached : ""}`}
+                      style={{ left: `${getPercent(goalEasy)}%` }}
+                    >
+                      <span>E</span>
+                    </div>
+                    <div
+                      className={`${styles.mobileGoalMarker} ${styles.markerPos} ${isMedReached ? styles.markerReached : ""}`}
+                      style={{ left: `${getPercent(goalMedium)}%` }}
+                    >
+                      <span>M</span>
+                    </div>
+                    <div
+                      className={`${styles.mobileGoalMarker} ${styles.markerPos} ${isHardReached ? styles.markerReached : ""}`}
+                      style={{ left: `${getPercent(goalHard)}%` }}
+                    >
+                      <span>H</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className={styles.mobileTargetTypeWrapper}>
+            <div className={styles.mobileScoreTitle}>TARGETS</div>
+            <div className={`${styles.mobileTargetType} ${goalEasy >= 0 ? styles.scorePos : styles.scoreNeg}`}>
+              {goalEasy >= 0 ? "POS" : "NEG"}
+            </div>
+          </div>
+        </div>
+
+        {/* Row 3: Target Goal Chips Inline */}
+        <div className={styles.mobileTargets}>
+          <div className={`${styles.mobileTargetChip} ${isEasyReached ? styles.chipReached : ""}`}>
+            <span>EASY: {Math.round(goalEasy)}</span>
+          </div>
+          <div className={`${styles.mobileTargetChip} ${isMedReached ? styles.chipReached : ""}`}>
+            <span>MED: {Math.round(goalMedium)}</span>
+          </div>
+          <div className={`${styles.mobileTargetChip} ${isHardReached ? styles.chipReached : ""}`}>
+            <span>HARD: {Math.round(goalHard)}</span>
+          </div>
+        </div>
+
+        {/* Row 4: Centered Responsive Grid */}
+        <div className={styles.mobileGridWrapper}>
+          <div
+            className={styles.mobileGrid}
+            style={{
+              gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
+              gridTemplateRows: `repeat(${gridSize}, 1fr)`
+            }}
+          >
+            {grid.map((cell, index) => {
+              const isOpened = cell.value === 1;
+              const cellNeighbor = getNeighborInfo(index);
+              let cellClass = styles.gameGridButtons;
+
+              if (isOpened) {
+                if (cell.effect > 0) cellClass += ` ${styles.gameGridItemActive}`;
+                else if (cell.effect < 0) cellClass += ` ${styles.gameGridItemNegative}`;
+                else cellClass += ` ${styles.gameGridItemZero}`;
+              }
+
+              const isHovered = hoveredIndex === index;
+              const cellStyle = (isHovered && radarEnabled) ? {
+                borderColor: cellNeighbor.sum > 0 ? "var(--success-color)" : cellNeighbor.sum < 0 ? "var(--error-color)" : "var(--neutral-color)",
+                boxShadow: cellNeighbor.sum > 0 ? "0 0 10px var(--success-glow)" : cellNeighbor.sum < 0 ? "0 0 10px var(--error-glow)" : "0 0 10px var(--neutral-glow)",
+                zIndex: 10
+              } : undefined;
+
+              return (
+                <div
+                  key={index}
+                  className={cellClass}
+                  style={cellStyle}
+                  onClick={() => handleClick(index)}
+                  onMouseEnter={() => !isTouchDevice && setHoveredIndex(index)}
+                  onMouseLeave={() => !isTouchDevice && setHoveredIndex(null)}
+                >
+                  {isOpened ? (
+                    <>
+                      <span className={styles.effectText}>
+                        {cell.effect > 0 ? `+${cell.effect}` : cell.effect}
+                      </span>
+                      {radarEnabled && (
+                        <span className={`${styles.neighborSumClue} ${cellNeighbor.sum > 0 ? styles.scorePos : cellNeighbor.sum < 0 ? styles.scoreNeg : ""}`}>
+                          {cellNeighbor.sum > 0 ? `+${cellNeighbor.sum}` : cellNeighbor.sum}
+                        </span>
+                      )}
+                    </>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Row 5: Compact Proximity Scanner Info */}
+        <div className={styles.mobileRadarScanner}>
+          {radarEnabled ? (
+            hoveredIndex !== null ? (
+              <div className={styles.mobileRadarData}>
+                <span>SCAN: R:{Math.floor(hoveredIndex / gridSize) + 1} C:{(hoveredIndex % gridSize) + 1}</span>
+                <span className={styles.mobileRadarDivider}>|</span>
+                <span>SUM: <strong className={hoveredNeighborInfo.sum > 0 ? styles.scorePos : hoveredNeighborInfo.sum < 0 ? styles.scoreNeg : ""}>
+                  {hoveredNeighborInfo.sum > 0 ? `+${hoveredNeighborInfo.sum}` : hoveredNeighborInfo.sum}
+                </strong></span>
+                <span className={styles.mobileRadarDivider}>|</span>
+                <span>COMP: <strong className={styles.scorePos}>{hoveredNeighborInfo.positiveCount}P</strong>/<strong className={styles.scoreNeg}>{hoveredNeighborInfo.negativeCount}N</strong></span>
+              </div>
+            ) : (
+              <span className={styles.mobileRadarPlaceholder}>
+                Tap closed cell to scan (tap again to reveal)
+              </span>
+            )
+          ) : (
+            <span className={styles.mobileRadarDisabled}>
+              RADAR OFFLINE (2.0x Multiplier Active)
+            </span>
+          )}
+        </div>
+
+        {/* Row 6: Action Buttons Row */}
+        <div className={styles.mobileActionButtons}>
+          <button
+            className={`${styles.mobileActionButton} ${currentRetreat > 0 ? styles.retreatActive : ""}`}
+            onClick={retreatHandler}
+            disabled={currentRetreat === 0}
+          >
+            <span>RETREAT (+{currentRetreat})</span>
+          </button>
+
+          <button
+            onClick={resetHandler}
+            className={styles.mobileActionButton}
+            disabled={cancelLeft <= Math.floor(getMaxCloses(difficulty) / 2)}
+          >
+            <span>RESET GRID</span>
+          </button>
+
+          <button
+            onClick={() => setGameStarted(false)}
+            className={`${styles.mobileActionButton} ${styles.mobileAbortButton}`}
+          >
+            <span>ABORT</span>
+          </button>
         </div>
       </div>
     );
@@ -792,7 +1073,9 @@ const ScoreGame: React.FC<{}> = () => {
               </div>
             ) : (
               <div className={styles.sensorPlaceholder}>
-                Hover over any cell on the board to scan adjacent hidden values
+                {isTouchDevice
+                  ? "Tap any closed cell to scan adjacent hidden values (tap again to reveal)"
+                  : "Hover over any cell on the board to scan adjacent hidden values"}
               </div>
             )
           ) : (
