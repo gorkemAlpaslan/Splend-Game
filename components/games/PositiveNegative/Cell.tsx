@@ -58,12 +58,6 @@ const Cell: React.FC<CellProps> = memo(({
           </span>
         )}
       </div>
-
-      {isOpened && radarEnabled && (
-        <span className={`${styles.clue} ${neighborSum > 0 ? styles.cluePos : neighborSum < 0 ? styles.clueNeg : styles.clueNeu}`}>
-          {neighborSum > 0 ? `+${neighborSum}` : neighborSum}
-        </span>
-      )}
     </div>
   );
 });
